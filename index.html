@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" content="notranslate">
+  <meta http-equiv="Content-Language" content="en">
+  <meta name="robots" content="no-translate">
+  <title>CC2 - English — Team Management</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    html, body {
+      translate: none !important;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      margin: 0;
+      padding: 0;
+    }
+    * { translate: none !important; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: #f8f9fc;
+      color: #1e293b;
+      font-size: 16px;
+      line-height: 1.7;
+      padding-top: 85px;
+      font-weight: 400;
+    }
+
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      color: #1e293b;
+      padding: 18px 32px;
+      border-bottom: 1px solid rgba(226,232,240,0.8);
+      box-shadow: 0 4px 20px rgba(15,23,42,0.04);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    #timer {
+      display: none;
+      font-weight: 700;
+      font-size: 1rem;
+      text-align: right;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 2px solid #2563eb;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #ffffff;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+      letter-spacing: 0.02em;
+      transition: all 0.3s ease;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 32px auto 60px;
+      background: #ffffff;
+      padding: 48px 48px 56px;
+      border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(15,23,42,0.08);
+      border: 1px solid rgba(226,232,240,0.8);
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 6px 30px rgba(15,23,42,0.08);
+      padding: 40px 40px 48px;
+      max-width: 680px;
+      margin: 40px auto;
+      text-align: left;
+      border: 1px solid rgba(226,232,240,0.8);
+    }
+
+    .card h2 {
+      color: #0f172a;
+      margin-top: 0;
+      margin-bottom: 12px;
+      text-align: center;
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .card p { font-size: 1rem; line-height: 1.7; color: #475569; }
+
+    label {
+      display: block;
+      margin: 20px 0 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #0f172a;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-family: 'Inter', inherit;
+      box-sizing: border-box;
+      background: #ffffff;
+      color: #1e293b;
+      transition: all 0.2s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+
+    button {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #fff;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: 'Inter', inherit;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.25);
+      transition: all 0.3s ease;
+    }
+
+    button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.35); }
+    button:active { transform: translateY(0); }
+
+    .btn-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 24px; }
+    .btn-row.center { justify-content: center; }
+    .btn-row.right { justify-content: flex-end; }
+
+    .btn-light {
+      background: #f1f5f9;
+      color: #2563eb;
+      border: 2px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(15,23,42,0.08);
+    }
+    .btn-light:hover { background: #e2e8f0; border-color: #cbd5e1; }
+
+    hr { margin: 28px 0; border: none; border-top: 2px solid #f1f5f9; }
+
+    #exam, #confirm, #partA, #partB { display: none; }
+    #partA.active, #partB.active { display: block; }
+
+    .muted { color: #64748b; font-size: 0.95rem; line-height: 1.6; }
+
+    .name-row { display: flex; gap: 14px; flex-wrap: wrap; }
+    .name-row .field { flex: 1 1 0; min-width: 200px; }
+    .upper { text-transform: uppercase; }
+
+    /* ===== PART A – Audio Matching ===== */
+    #partA h2 {
+      text-align: left;
+      margin-bottom: 8px;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .partA-intro {
+      font-size: 0.95rem;
+      color: #64748b;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .audio-question {
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 18px;
+      background: #ffffff;
+      transition: all 0.2s ease;
+    }
+
+    .audio-question:hover {
+      border-color: #bfdbfe;
+      box-shadow: 0 4px 16px rgba(37,99,235,0.08);
+    }
+
+    .audio-question.answered {
+      border-color: #86efac;
+      background: #f0fdf4;
+    }
+
+    .question-number {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+    }
+
+    .audio-player-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .audio-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #475569;
+      white-space: nowrap;
+    }
+
+    audio {
+      flex: 1;
+      min-width: 200px;
+      height: 36px;
+      border-radius: 8px;
+    }
+
+    .vocab-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-family: 'Inter', inherit;
+      background: #ffffff;
+      color: #1e293b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    .vocab-select:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+
+    /* ===== PART B – Article + MCQ ===== */
+    #partB h2 {
+      text-align: left;
+      margin-bottom: 8px;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .article-wrapper {
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 36px;
+      box-shadow: 0 4px 16px rgba(15,23,42,0.06);
+    }
+
+    .article-header {
+      background: #0f172a;
+      padding: 20px 28px;
+      color: #ffffff;
+    }
+
+    .article-source {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+
+    .article-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .article-byline {
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .article-body {
+      padding: 28px;
+      background: #f8f9fc;
+      max-height: 380px;
+      overflow-y: auto;
+    }
+
+    .article-body p {
+      font-size: 0.93rem;
+      line-height: 1.85;
+      color: #374151;
+      margin-bottom: 16px;
+    }
+
+    .article-body p:last-child { margin-bottom: 0; }
+
+    .article-scroll-hint {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      padding: 10px;
+      background: #f1f5f9;
+      border-top: 1px solid #e2e8f0;
+      font-style: italic;
+    }
+
+    .questions-section h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .questions-intro {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-bottom: 24px;
+    }
+
+    .mcq-question {
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 28px 28px 24px;
+      margin-bottom: 28px;
+      background: #ffffff;
+      transition: border-color 0.2s ease;
+      position: relative;
+    }
+
+    .mcq-question:nth-child(odd) {
+      background: #ffffff;
+      border-color: #e2e8f0;
+    }
+
+    .mcq-question:nth-child(even) {
+      background: #f8faff;
+      border-color: #dbeafe;
+    }
+
+    .mcq-question.answered { border-color: #86efac; background: #f0fdf4; }
+
+    .mcq-question-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .mcq-question-divider::before,
+    .mcq-question-divider::after {
+      content: "";
+      flex: 1;
+      height: 2px;
+      background: #e2e8f0;
+      border-radius: 2px;
+    }
+
+    .mcq-question-text {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .mcq-question-num {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: -28px -28px 18px -28px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      border-radius: 14px 14px 0 0;
+    }
+
+    .mcq-question:nth-child(even) .mcq-question-num {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    }
+
+    .mcq-options { display: flex; flex-direction: column; gap: 10px; }
+
+    .mcq-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-size: 0.9rem;
+      color: #374151;
+      line-height: 1.5;
+    }
+
+    .mcq-option:hover { border-color: #93c5fd; background: #eff6ff; }
+    .mcq-option.selected { border-color: #2563eb; background: #eff6ff; }
+
+    .mcq-option input[type="radio"] {
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: #2563eb;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    /* Progress badges */
+    .progress-badge {
+      font-size: 0.9rem;
+      color: #64748b;
+      font-weight: 600;
+      padding: 8px 16px;
+      background: #f1f5f9;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .progress-badge.complete {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    /* Anti-cheat overlay */
+    body.exit-lock { overflow: hidden; }
+    body.exit-lock header, body.exit-lock main { filter: blur(8px); pointer-events: none; }
+    body.overlay-active main, body.overlay-active header { filter: blur(8px); pointer-events: none; }
+    body.overlay-active { overflow: hidden; }
+
+    #exitOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    #exitOverlay > div {
+      background: #ffffff;
+      max-width: 480px;
+      width: 92%;
+      border-radius: 24px;
+      padding: 32px 32px 28px;
+      box-shadow: 0 20px 60px rgba(15,23,42,0.4);
+      animation: slideUp 0.3s ease;
+    }
+
+    #exitOverlay h2 { margin: 0 0 12px 0; font-size: 1.5rem; color: #0f172a; font-weight: 700; }
+    #exitOverlayStrike { margin: 8px 0 12px 0; font-size: 1.5rem; font-weight: 800; color: #dc2626; letter-spacing: 0.04em; text-transform: uppercase; }
+    #exitOverlayMessage { margin: 0 0 16px 0; font-size: 0.95rem; color: #475569; line-height: 1.6; }
+    #exitOverlayCountdownText { margin: 16px 0 8px 0; font-size: 0.9rem; color: #64748b; text-align: center; line-height: 1.5; }
+    #exitOverlayCountdownDigits { font-size: 3.5rem; font-weight: 800; text-align: center; margin: 0 0 24px 0; color: #dc2626; letter-spacing: -0.02em; }
+
+    #exitOverlayStay { border: 2px solid #cbd5e1; background: #f1f5f9; color: #2563eb; box-shadow: 0 2px 8px rgba(15,23,42,0.08); }
+    #exitOverlayStay:hover { background: #e2e8f0; }
+    #exitOverlayLeave { border: none; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: #fff; box-shadow: 0 4px 14px rgba(220,38,38,0.3); }
+
+    @media (max-width: 768px) {
+      body { padding-top: 100px; }
+      header { flex-direction: column; align-items: flex-start; gap: 10px; padding-inline: 20px; }
+      #timer { align-self: flex-end; font-size: 0.9rem; padding: 8px 16px; }
+      main { margin: 20px auto 40px; padding: 28px 20px 40px; border-radius: 16px; }
+      .card { margin: 24px auto; padding: 28px 20px 36px; max-width: 100%; }
+      .audio-player-row { flex-direction: column; align-items: stretch; }
+      audio { min-width: unset; width: 100%; }
+      .name-row .field { min-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1 id="examTitleHeader">CC2 - English — Team Management</h1>
+    <div id="timer"></div>
+  </header>
+
+  <main>
+    <span id="langSentinel" style="display:none;">
+      This reference sentence is used only to detect automatic translation of the exam page.
+    </span>
+
+    <!-- ===== LOGIN ===== -->
+    <section id="login" class="card">
+      <h2 style="font-size: 2rem; margin-bottom: 16px;">Commencer l'épreuve</h2>
+      <p style="text-align: center; font-size: 1rem; color: #64748b; margin-bottom: 32px;">
+        Merci de renseigner vos informations pour commencer. Une fois l'épreuve lancée,
+        vous disposerez de <b style="color: #2563eb;">1h15</b> pour la compléter.
+      </p>
+
+      <div style="background: #f8f9fc; padding: 24px; border-radius: 12px; margin-bottom: 24px;">
+        <label>Nom et prénom</label>
+        <div class="name-row">
+          <div class="field"><input type="text" id="studentLastName" class="upper" placeholder="NOM" required></div>
+          <div class="field"><input type="text" id="studentFirstName" placeholder="Prénom" required></div>
+        </div>
+
+        <label>Adresse e-mail</label>
+        <input type="email" id="studentEmail" placeholder="votre.email@example.com" required>
+
+        <label>Groupe</label>
+        <select id="groupSelect" required>
+          <option value="">Sélectionner votre groupe</option>
+          <option value="M2 MDO G1">M2 MDO G1</option>
+          <option value="M2 MDO G2">M2 MDO G2</option>
+          <option value="M2 MDO G3">M2 MDO G3</option>
+        </select>
+
+        <label>Code de classe</label>
+        <input type="text" id="classCode" placeholder="Code fourni par l'enseignant" required>
+      </div>
+
+      <div class="btn-row center" style="margin-top: 32px;">
+        <button id="startBtn" type="button" style="font-size: 1.05rem; padding: 16px 48px;">Commencer l'épreuve</button>
+      </div>
+    </section>
+
+    <!-- ===== CONFIRM ===== -->
+    <section id="confirm" class="card">
+      <h2 style="font-size: 2rem; margin-bottom: 24px;">Avant de commencer l'épreuve</h2>
+
+      <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin-bottom: 28px;">
+        <p style="margin: 0 0 12px 0; font-weight: 600; color: #92400e; font-size: 1rem;">Comment fonctionne l'épreuve ?</p>
+        <ul style="margin: 0; padding-left: 20px; color: #78350f; font-size: 0.95rem;">
+          <li style="margin-bottom: 8px;">L'épreuve se déroule en <strong>plein écran</strong>.</li>
+          <li style="margin-bottom: 8px;">Si vous quittez la fenêtre ou changez d'application, un <strong>message d'avertissement</strong> apparaît.</li>
+          <li style="margin-bottom: 8px;">Vous avez <strong>15&nbsp;secondes</strong> pour revenir, sinon l'épreuve est arrêtée et devra être recommencée.</li>
+          <li style="margin-bottom: 8px;">Après <strong>3 évènements techniques</strong>, l'épreuve est <strong>envoyée automatiquement</strong>.</li>
+          <li style="margin-bottom: 0;">Tous ces évènements sont enregistrés dans un <strong>récapitulatif de session</strong> joint à votre copie.</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 28px;">
+        <p style="margin: 0 0 16px 0; font-weight: 600; color: #0f172a; font-size: 1.1rem;">Vérifiez vos informations</p>
+        <div style="display: grid; gap: 12px;">
+          <div style="background: #f8f9fc; padding: 16px 20px; border-radius: 10px; border: 2px solid #e2e8f0;">
+            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Nom &amp; Prénom</div>
+            <div style="font-size: 1.05rem; color: #0f172a; font-weight: 600;" id="confirmName"></div>
+          </div>
+          <div style="background: #f8f9fc; padding: 16px 20px; border-radius: 10px; border: 2px solid #e2e8f0;">
+            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Email</div>
+            <div style="font-size: 1.05rem; color: #0f172a; font-weight: 600;" id="confirmEmail"></div>
+          </div>
+          <div style="background: #f8f9fc; padding: 16px 20px; border-radius: 10px; border: 2px solid #e2e8f0;">
+            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Groupe</div>
+            <div style="font-size: 1.05rem; color: #0f172a; font-weight: 600;" id="confirmGroup"></div>
+          </div>
+        </div>
+        <p class="muted" style="margin-top: 16px;">Si quelque chose n'est pas correct, cliquez sur «&nbsp;Modifier&nbsp;» pour revenir à l'écran précédent.</p>
+      </div>
+
+      <div class="btn-row" style="justify-content: space-between; margin-top: 32px;">
+        <button type="button" class="btn-light" id="confirmBackBtn">← Modifier</button>
+        <button type="button" id="confirmBeginBtn" style="font-size: 1.05rem; padding: 14px 40px;">Commencer l'épreuve →</button>
+      </div>
+    </section>
+
+    <!-- ===== EXAM ===== -->
+    <section id="exam">
+      <form id="examForm">
+        <input type="hidden" name="studentName" id="studentNameField">
+        <input type="hidden" name="studentEmail" id="studentEmailField">
+        <input type="hidden" name="classCode" id="classCodeField">
+        <input type="hidden" name="groupName" id="groupNameField">
+
+        <!-- ===== PART A ===== -->
+        <div id="partA" class="active">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 12px;">
+            <h2 style="margin: 0;">Part A – Vocabulary Listening</h2>
+            <div id="partAProgress" class="progress-badge">
+              <span id="partAAnswered">0</span>/10 répondues
+            </div>
+          </div>
+
+          <p class="partA-intro">
+            Écoutez chaque extrait audio. Vous entendrez une définition. Sélectionnez le mot de vocabulaire correct
+            dans le menu déroulant sous chaque lecteur. Vous pouvez réécouter chaque extrait autant de fois que nécessaire.
+          </p>
+
+          <div id="audioQuestionsContainer"></div>
+
+          <div class="btn-row right" style="margin-top: 8px;">
+            <button type="button" id="toPartB">Next → Part B</button>
+          </div>
+        </div>
+
+        <!-- ===== PART B ===== -->
+        <div id="partB">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 12px;">
+            <h2 style="margin: 0;">Part B – Reading Comprehension</h2>
+            <div id="partBProgress" class="progress-badge">
+              <span id="partBAnswered">0</span>/5 répondues
+            </div>
+          </div>
+
+          <p class="muted" style="margin-bottom: 16px;">
+            Lisez l'article ci-dessous attentivement, puis répondez aux cinq questions de compréhension.
+            Sélectionnez la meilleure réponse pour chaque question. Chaque question vaut <strong>2 points</strong>.
+          </p>
+
+          <div style="background: #eff6ff; border-left: 4px solid #2563eb; padding: 14px 18px; border-radius: 8px; margin-bottom: 24px; font-size: 0.88rem; color: #1e40af; line-height: 1.6;">
+            ℹ️ <strong>Note :</strong> Vos réponses ne sont <strong>pas évaluées automatiquement</strong> pendant l'épreuve. Le résultat final sera calculé et communiqué par votre enseignant après réception de votre copie.
+          </div>
+
+          <!-- Article -->
+          <div class="article-wrapper">
+            <div class="article-header">
+              <div class="article-source">The New York Times — Work Friend</div>
+              <div class="article-title">Will Leaving My Terrible Job Make Me Look Flaky?</div>
+              <div class="article-byline">By Max Read &nbsp;·&nbsp; Jan. 24, 2026</div>
+            </div>
+            <div class="article-body">
+              <p>I'm four months shy of a year into a role that has become unsustainably broad, with constantly expanding scope and shifting expectations. Despite great feedback from my peers and measurable impact, the management dynamic makes it difficult to succeed: my manager's feedback is largely corrective rather than enabling, priorities change without corresponding trade-offs and accountability for outcomes sits with me even when inputs are outside my control.</p>
+              <p>Complicating this further, the leadership structure offers no meaningful escalation or mediation path. My manager is in a relationship with the company owner, and another relative is the head of H.R., which limits the ability to address these issues constructively. My concerns have fallen on deaf ears, and the response was essentially: "That's just how it works here."</p>
+              <p>I'm 40 and don't take short tenures lightly, but I'm concerned the role is set up in a way that makes long-term success unrealistic. I absolutely love what I do, and my team relies on me for a lot because they know they can. But I have never felt worse about myself because of the borderline harassment I endure.</p>
+              <p>How can I explain this honestly in interviews when asked why I'm leaving, without sounding negative or defensive?</p>
+              <p><em>The specific question you're asking has a pretty short and straightforward answer, which I promise I'll answer. But I get the sense that there's another question you're actually asking, lurking behind the articulated one — a question that's something like, "Am I justified in hating this job and wanting to quit so soon?"</em></p>
+              <p><em>The answer to that question is "yes." Allow me to reassure you: If even part of the dynamic you're describing is accurate, you've found yourself in an impossible position within a dysfunctional company, and you are absolutely right to seek a quick exit.</em></p>
+              <p><em>And even if you're somehow misconstruing the situation, and it's a "you" problem rather than a "them" problem, I'm not sure my advice would change. Sometimes a job is just a bad fit, and you're not doing yourself or your employers any favors sticking it out. They want someone who does the job to their (perhaps unreasonable) parameters, and you want a job with clearer expectations and less agita — and maybe also one where your manager's paramour doesn't sign your paychecks.</em></p>
+              <p><em>You seem particularly concerned about the relatively short length of your tenure. But eight months is more than enough time for an experienced professional to know when a job is not right. And recruiters and H.R. professionals are not going to be fazed by a single short job across a longer and generally stable career journey — especially if you can explain the problem clearly.</em></p>
+              <p><em>I worry that your feelings of insecurity (or guilt) about leaving this job are leading you to over-explain, as though you were unburdening yourself to a therapist, or perhaps testifying in front of a judge. An interviewer is neither. They are not really interested in detailed specifics of your bad workplace, and the last thing they want to hear is an elaborate rehash of a series of disputes.</em></p>
+              <p><em>In fact, what they are looking for is reassurance that this blip won't be a factor at all in your future career. So be succinct, confident and neutral. Say something like: "I was brought in to do a specific job, at which I made measurable impact. Over time, it became clear the organization needs something different than what I was hired to do. I'm looking for a role where I can focus on my strengths and contribute at the level I do best."</em></p>
+              <p><em>If they press for more details, you don't have to say anything more than: "The expectations evolved in ways that made it hard to do my best work long-term. I'd rather make a thoughtful move now than wait until I'm burned out."</em></p>
+              <p><em>Most importantly, believe what you're telling them: Don't feel guilty, don't second-guess your instincts and don't waste any time lamenting or worrying about a job that didn't work out.</em></p>
+            </div>
+            <div class="article-scroll-hint">↕ Scroll to read the full article</div>
+          </div>
+
+          <!-- MCQ Questions (injected by JS) -->
+          <div class="questions-section">
+            <h3>Questions de compréhension</h3>
+            <p class="questions-intro">Répondez aux cinq questions en vous basant sur l'article ci-dessus.</p>
+            <div id="mcqContainer"></div>
+          </div>
+
+          <div class="btn-row" style="justify-content: space-between; margin-top: 32px;">
+            <button type="button" class="btn-light" id="toPartA">← Back to Part A</button>
+            <button type="submit" id="submitBtn">Submit Exam</button>
+          </div>
+        </div>
+
+      </form>
+    </section>
+  </main>
+
+  <!-- Exit overlay -->
+  <div id="exitOverlay">
+    <div>
+      <h2>Quitter l'épreuve ?</h2>
+      <div id="exitOverlayStrike"></div>
+      <p id="exitOverlayMessage"></p>
+      <p id="exitOverlayCountdownText"></p>
+      <div id="exitOverlayCountdownDigits">15</div>
+      <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:8px;">
+        <button type="button" id="exitOverlayStay">Rester dans l'épreuve</button>
+        <button type="button" id="exitOverlayLeave">Quitter et effacer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <script>
+    // ============================================================
+    //  EXAM CONFIGURATION
+    // ============================================================
+    const EXAM_CONFIG = {
+      examId:               "M2MDO_CC2_2025",
+      classCode:            "BLANK",
+      debugCode:            "DEBUG",
+      examTitleBase:        "CC2 - English — Team Management",
+      allowedGroups:        ["M2 MDO G1", "M2 MDO G2", "M2 MDO G3"],
+      timeLimitMinutes:     75,
+      emailSubjectTemplate: "CC2 - English — Team Management (GROUP) – (NAME)",
+      classLabel:           "M2MDO",
+      githubBase:           "https://raw.githubusercontent.com/dwayneswanson-ecdp/CC2-M2-MDO-Team-Management/main/"
+    };
+
+    // ============================================================
+    //  PART A – Audio questions data
+    //  Order matches def_01.mp3 → def_10.mp3
+    // ============================================================
+    const PART_A_DATA = [
+      { file: "def_01.mp3", correct: "Workload" },
+      { file: "def_02.mp3", correct: "Morale" },
+      { file: "def_03.mp3", correct: "Feedback" },
+      { file: "def_04.mp3", correct: "Accountability" },
+      { file: "def_05.mp3", correct: "Prioritization" },
+      { file: "def_06.mp3", correct: "Alignment" },
+      { file: "def_07.mp3", correct: "Stakeholder" },
+      { file: "def_08.mp3", correct: "Deadline" },
+      { file: "def_09.mp3", correct: "Negotiation" },
+      { file: "def_10.mp3", correct: "Trade-off" }
+    ];
+
+    const VOCAB_TERMS = [
+      "Workload", "Morale", "Feedback", "Accountability", "Prioritization",
+      "Alignment", "Stakeholder", "Deadline", "Negotiation", "Trade-off"
+    ];
+
+    // ============================================================
+    //  PART B – 10 questions, 5 randomly selected per student
+    // ============================================================
+    const ALL_QUESTIONS = [
+      {
+        id: "pb1",
+        text: 'The employee says "priorities change without corresponding trade-offs." What is the most accurate analysis of this situation?',
+        options: [
+          "The manager is successfully adapting priorities to meet deadlines",
+          "New responsibilities are added without removing existing ones, making prioritization impossible",
+          "The employee is struggling to manage their own workload independently",
+          "The team lacks the alignment needed to distribute tasks fairly"
+        ],
+        correct: 1
+      },
+      {
+        id: "pb2",
+        text: 'The columnist warns against "over-explaining" in interviews. Which approach best reflects professional accountability and alignment?',
+        options: [
+          "Giving a detailed account of management failures to show self-awareness",
+          "Focusing only on stakeholder misalignment with no mention of personal grievances",
+          "Presenting a concise, forward-focused narrative that shows accountability without assigning blame",
+          "Sharing only selected details to balance honesty with professionalism"
+        ],
+        correct: 2
+      },
+      {
+        id: "pb3",
+        text: 'The employee says "accountability for outcomes sits with me even when inputs are outside my control." Which management failure does this most precisely reflect?',
+        options: [
+          "A mismatch between individual workload and team deadlines",
+          "A breakdown in feedback that prevents the employee from improving",
+          "Accountability is assigned without the authority or resources needed to deliver",
+          "A failed negotiation between the employee and manager over role expectations"
+        ],
+        correct: 2
+      },
+      {
+        id: "pb4",
+        text: "The manager is in a relationship with the owner, and a relative heads HR. What is the most serious team management consequence of this structure?",
+        options: [
+          "It increases workload by removing a formal escalation process",
+          "It makes meaningful negotiation impossible, leaving misalignment with no resolution path",
+          "It forces employees to choose between morale and organisational loyalty",
+          "It concentrates too much decision-making authority within HR"
+        ],
+        correct: 1
+      },
+      {
+        id: "pb5",
+        text: 'The columnist advises the employee to be "succinct, confident and neutral." In stakeholder management terms, why is this strategically important?',
+        options: [
+          "It protects the employee from legal liability",
+          "It demonstrates strong prioritization by focusing only on relevant information",
+          "It positions the employee as credible while carefully managing the interviewer's perception",
+          "It avoids the trade-off between honesty and discretion that longer answers create"
+        ],
+        correct: 2
+      },
+      {
+        id: "pb6",
+        text: 'The employee says the team "relies on me for a lot because they know they can." What is the most critical risk this creates?',
+        options: [
+          "It shows poor workload distribution and creates a single point of failure for the whole team",
+          "It shows strong alignment between the employee's role and the team's needs",
+          "It reflects a positive dynamic where strong performance leads to greater responsibility",
+          "It shows the employee has successfully negotiated an expanded role informally"
+        ],
+        correct: 0
+      },
+      {
+        id: "pb7",
+        text: 'The columnist argues that even if the problem is "a you problem rather than a them problem," the advice would not change. What does this reveal about alignment and professional decision-making?',
+        options: [
+          "Personal morale is always a more reliable indicator of dysfunction than structure",
+          "Whether misalignment comes from the individual or the organisation, the outcome requires the same response",
+          "Accountability should always be assigned to the individual before looking at systemic factors",
+          "Effective negotiation can resolve most alignment issues regardless of their origin"
+        ],
+        correct: 1
+      },
+      {
+        id: "pb8",
+        text: 'The employee describes feedback as "largely corrective rather than enabling." What is the key distinction, and why does it matter for team morale?',
+        options: [
+          "Corrective feedback targets past errors while enabling feedback sets future deadlines",
+          "Corrective feedback identifies mistakes after the fact, while enabling feedback builds confidence — without it, morale and performance both suffer",
+          "Enabling feedback suits junior employees while corrective feedback is standard for experienced professionals",
+          "The distinction is mainly one of tone, and both approaches produce similar results when applied consistently"
+        ],
+        correct: 1
+      },
+      {
+        id: "pb9",
+        text: "The employee has been in the role eight months. What trade-off are they ultimately navigating in deciding whether to stay or leave?",
+        options: [
+          "A trade-off between salary and workload, where leaving means lower pay in a better environment",
+          "A trade-off between short-term career optics and long-term wellbeing, where staying protects the CV but accelerates personal deterioration",
+          "A trade-off between stakeholder loyalty and personal ambition",
+          "A trade-off between deadline pressure and alignment, where staying allows more time to build credibility"
+        ],
+        correct: 1
+      },
+      {
+        id: "pb10",
+        text: "Considering all the dysfunctions described — shifting priorities, misplaced accountability, absent feedback, and blocked escalation — which vocabulary concept best explains why this organisation is fundamentally hard to manage from within?",
+        options: [
+          "Workload — responsibilities have grown beyond what one person can manage",
+          "Negotiation — no formal process exists to resolve disputes",
+          "Alignment — there is a systemic failure to connect individual roles, management expectations, and organisational goals",
+          "Deadline — the absence of clear timelines makes performance impossible to measure"
+        ],
+        correct: 2
+      }
+    ];
+
+    // ============================================================
+    //  STATE
+    // ============================================================
+    const DEADLINE_KEY = "examDeadline_" + EXAM_CONFIG.examId;
+    let examDeadline    = null;
+    let timer           = null;
+    let isMobile        = false;
+    let safeBlurUntil   = 0;
+
+    let violationCount          = 0;
+    const MAX_VIOLATIONS        = 3;
+    const MAX_WARNINGS          = MAX_VIOLATIONS - 1;
+    let exitCountdownTimer      = null;
+    let exitSecondsRemaining    = 0;
+
+    let selectedGroup       = "";
+    let currentExamTitle    = EXAM_CONFIG.examTitleBase;
+    let examActive          = false;
+    let examSubmitted       = false;
+    let isStartingExam      = false;
+    let exitPromptOpen      = false;
+    let antiCheatSuspendedUntil = 0;
+
+    // Questions selected for this student
+    let selectedQuestions = [];
+    // Shuffled question order for Part A
+    let shuffledPartAOrder = [];
+
+    const sessionEvents = [];
+
+    // ============================================================
+    //  RESTORE DEADLINE
+    // ============================================================
+    (function restoreDeadline() {
+      const stored = localStorage.getItem(DEADLINE_KEY);
+      if (!stored) return;
+      const parsed = parseInt(stored, 10);
+      if (!Number.isNaN(parsed) && parsed > Date.now()) {
+        examDeadline = parsed;
+      } else {
+        localStorage.removeItem(DEADLINE_KEY);
+      }
+    })();
+
+    // ============================================================
+    //  HELPERS
+    // ============================================================
+    function armSafeBlur(ms = 1200) { safeBlurUntil = Date.now() + ms; }
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function formatTimeStamp(date = new Date()) {
+      try {
+        return date.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      } catch (e) { return date.toISOString(); }
+    }
+
+    function logEvent(label, detail) {
+      const entry = { time: formatTimeStamp(), label: label || "", detail: detail || "" };
+      sessionEvents.push(entry);
+    }
+
+    // ============================================================
+    //  BUILD PART A (audio questions)
+    // ============================================================
+    function buildPartA() {
+      const container = document.getElementById("audioQuestionsContainer");
+      container.innerHTML = "";
+
+      // Shuffle question order
+      shuffledPartAOrder = shuffle([...Array(PART_A_DATA.length).keys()]);
+
+      shuffledPartAOrder.forEach((origIdx, displayIdx) => {
+        const item = PART_A_DATA[origIdx];
+        const audioUrl = EXAM_CONFIG.githubBase + item.file;
+
+        const shuffledTerms = shuffle([...VOCAB_TERMS]);
+
+        const div = document.createElement("div");
+        div.className = "audio-question";
+        div.dataset.origIdx = origIdx;
+
+        const optionsHtml = shuffledTerms.map(term =>
+          `<option value="${term}">${term}</option>`
+        ).join("");
+
+        div.innerHTML = `
+          <div class="question-number">Définition ${displayIdx + 1} sur 10</div>
+          <div class="audio-player-row">
+            <span class="audio-label">🔊 Listen:</span>
+            <audio controls preload="none" src="${audioUrl}"></audio>
+          </div>
+          <select class="vocab-select" name="partA_q${origIdx}" data-orig="${origIdx}">
+            <option value="">— Sélectionnez le mot de vocabulaire correspondant —</option>
+            ${optionsHtml}
+          </select>
+        `;
+
+        // Safe blur on audio interaction
+        const audioEl = div.querySelector("audio");
+        ["mousedown", "touchstart", "click", "play", "pause"].forEach(evt => {
+          audioEl.addEventListener(evt, () => armSafeBlur(3000), { passive: true });
+        });
+
+        // Safe blur on select
+        const selEl = div.querySelector("select");
+        selEl.addEventListener("mousedown", () => { if (isMobile) armSafeBlur(1500); });
+        selEl.addEventListener("touchstart", () => { if (isMobile) armSafeBlur(2000); });
+        selEl.addEventListener("change", () => {
+          div.classList.toggle("answered", selEl.selectedIndex > 0);
+          updatePartAProgress();
+        });
+
+        container.appendChild(div);
+      });
+    }
+
+    function updatePartAProgress() {
+      const selects = document.querySelectorAll("#audioQuestionsContainer select");
+      let answered = 0;
+      selects.forEach(s => { if (s.selectedIndex > 0) answered++; });
+      const el = document.getElementById("partAAnswered");
+      if (el) el.textContent = answered;
+      const badge = document.getElementById("partAProgress");
+      if (badge) badge.classList.toggle("complete", answered === 10);
+    }
+
+    // ============================================================
+    //  BUILD PART B (random 5 from 10 MCQ)
+    // ============================================================
+    function buildPartB() {
+      selectedQuestions = shuffle([...ALL_QUESTIONS]).slice(0, 5);
+      const container = document.getElementById("mcqContainer");
+      container.innerHTML = "";
+
+      selectedQuestions.forEach((q, idx) => {
+        const div = document.createElement("div");
+        div.className = "mcq-question";
+        div.dataset.qid = q.id;
+
+        const optionsHtml = q.options.map((opt, oi) => `
+          <label class="mcq-option" data-qid="${q.id}" data-oi="${oi}">
+            <input type="radio" name="${q.id}" value="${oi}">
+            <span>${opt}</span>
+          </label>
+        `).join("");
+
+        div.innerHTML = `
+          <div class="mcq-question-num">Question ${idx + 1} sur 5</div>
+          <div class="mcq-question-text">${q.text}</div>
+          <div class="mcq-options">${optionsHtml}</div>
+        `;
+
+        // Option selection styling
+        div.querySelectorAll(".mcq-option").forEach(label => {
+          label.addEventListener("click", () => {
+            div.classList.add("answered");
+            div.querySelectorAll(".mcq-option").forEach(l => l.classList.remove("selected"));
+            label.classList.add("selected");
+            updatePartBProgress();
+          });
+        });
+
+        container.appendChild(div);
+      });
+    }
+
+    function updatePartBProgress() {
+      let answered = 0;
+      selectedQuestions.forEach(q => {
+        if (document.querySelector(`input[name="${q.id}"]:checked`)) answered++;
+      });
+      const el = document.getElementById("partBAnswered");
+      if (el) el.textContent = answered;
+      const badge = document.getElementById("partBProgress");
+      if (badge) badge.classList.toggle("complete", answered === 5);
+    }
+
+    // ============================================================
+    //  TIMER
+    // ============================================================
+    function startTimer() {
+      clearInterval(timer);
+      const timerDisplay = document.getElementById("timer");
+      timer = setInterval(() => {
+        if (!examDeadline) return;
+        const remainingMs = examDeadline - Date.now();
+        const totalSec = Math.max(0, Math.floor(remainingMs / 1000));
+        const m = Math.floor(totalSec / 60);
+        const s = totalSec % 60;
+
+        if (timerDisplay) {
+          timerDisplay.textContent = `Temps restant : ${m}:${s.toString().padStart(2, "0")}`;
+          const isLow = totalSec <= 5 * 60;
+          timerDisplay.style.background = isLow
+            ? "linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)"
+            : "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)";
+          timerDisplay.style.borderColor = isLow ? "#dc2626" : "#2563eb";
+          timerDisplay.style.boxShadow = isLow
+            ? "0 4px 16px rgba(220,38,38,0.35)"
+            : "0 4px 12px rgba(37,99,235,0.25)";
+        }
+
+        if (remainingMs <= 0) {
+          clearInterval(timer);
+          submitExam("Time limit reached – exam auto-submitted.");
+        }
+      }, 1000);
+    }
+
+    // ============================================================
+    //  ANTI-CHEAT
+    // ============================================================
+    function setOverlayActive(active) {
+      document.body.classList.toggle("overlay-active", active);
+      document.body.classList.toggle("exit-lock", active);
+    }
+
+    function askToExitExam(reason, source) {
+      if (!examActive || examSubmitted || exitPromptOpen) return;
+      if (Date.now() < antiCheatSuspendedUntil) return;
+
+      violationCount++;
+
+      const exitOverlay          = document.getElementById("exitOverlay");
+      const exitOverlayStrike    = document.getElementById("exitOverlayStrike");
+      const exitOverlayMessage   = document.getElementById("exitOverlayMessage");
+      const exitOverlayCountdownText   = document.getElementById("exitOverlayCountdownText");
+      const exitOverlayCountdownDigits = document.getElementById("exitOverlayCountdownDigits");
+
+      if (exitOverlayStrike) {
+        exitOverlayStrike.textContent = `AVERTISSEMENT ${Math.min(violationCount, MAX_WARNINGS)} / ${MAX_WARNINGS}`;
+      }
+
+      if (violationCount >= MAX_VIOLATIONS) {
+        logEvent("Anti-cheat limit reached", `${source} – violation #${violationCount} – auto-submitted.`);
+        if (exitCountdownTimer) { clearInterval(exitCountdownTimer); exitCountdownTimer = null; }
+        if (exitOverlay) exitOverlay.style.display = "none";
+        setOverlayActive(false);
+        alert("L'épreuve a été automatiquement envoyée après plusieurs sorties de l'écran (3 évènements détectés).");
+        submitExam("Anti-cheat: 3 events – exam auto-submitted.");
+        return;
+      }
+
+      exitPromptOpen = true;
+      const warningSuffix = ` Avertissement ${violationCount} sur 2. Au-delà, l'épreuve sera automatiquement envoyée.`;
+      if (exitOverlayMessage) exitOverlayMessage.textContent = (reason || "Vous avez quitté l'écran de l'épreuve.") + warningSuffix;
+      if (exitOverlay) exitOverlay.style.display = "flex";
+      setOverlayActive(true);
+
+      exitSecondsRemaining = 15;
+      if (exitOverlayCountdownText) exitOverlayCountdownText.textContent = `Vous avez ${exitSecondsRemaining} secondes pour revenir.`;
+      if (exitOverlayCountdownDigits) exitOverlayCountdownDigits.textContent = exitSecondsRemaining;
+
+      if (exitCountdownTimer) clearInterval(exitCountdownTimer);
+      exitCountdownTimer = setInterval(() => {
+        exitSecondsRemaining--;
+        if (exitOverlayCountdownText) exitOverlayCountdownText.textContent = `Vous avez ${exitSecondsRemaining} secondes pour revenir.`;
+        if (exitOverlayCountdownDigits) exitOverlayCountdownDigits.textContent = exitSecondsRemaining;
+        if (exitSecondsRemaining <= 0) {
+          clearInterval(exitCountdownTimer); exitCountdownTimer = null;
+          exitPromptOpen = false;
+          if (exitOverlay) exitOverlay.style.display = "none";
+          setOverlayActive(false);
+          terminateExam("Vous n'êtes pas revenu à temps. L'épreuve a été arrêtée.");
+        }
+      }, 1000);
+
+      logEvent("Exit warning shown", `${source} – violation #${violationCount}`);
+    }
+
+    function terminateExam(message) {
+      if (!examActive) return;
+      examActive = false;
+      if (exitCountdownTimer) { clearInterval(exitCountdownTimer); exitCountdownTimer = null; }
+      setOverlayActive(false);
+      logEvent("Exam terminated", message);
+      alert(message || "L'épreuve est terminée.");
+      resetToLanding();
+    }
+
+    // ============================================================
+    //  SUBMIT EXAM
+    // ============================================================
+    function submitExam(autoReason) {
+      if (examSubmitted) return;
+      examSubmitted = true;
+      clearInterval(timer);
+
+      const submitBtn = document.getElementById("submitBtn");
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Envoi en cours…"; }
+
+      logEvent("Exam submitted", autoReason || "Student clicked submit");
+
+      const studentName  = document.getElementById("studentNameField").value;
+      const studentEmail = document.getElementById("studentEmailField").value;
+      const group        = selectedGroup || document.getElementById("groupNameField").value;
+
+      let minutesUsed = EXAM_CONFIG.timeLimitMinutes;
+      if (examDeadline) {
+        const remainingMs  = examDeadline - Date.now();
+        const remainingMin = Math.max(0, Math.floor(remainingMs / 60000));
+        minutesUsed        = EXAM_CONFIG.timeLimitMinutes - remainingMin;
+      }
+
+      // ---- Grade Part A ----
+      let scoreA = 0;
+      let partARowsHTML = "";
+      const allSelects = document.querySelectorAll("#audioQuestionsContainer select");
+
+      allSelects.forEach(sel => {
+        const origIdx    = parseInt(sel.dataset.orig, 10);
+        const item       = PART_A_DATA[origIdx];
+        const studentAns = sel.value || "No answer";
+        const correct    = item.correct;
+        const ok         = studentAns === correct;
+        if (ok) scoreA++;
+        partARowsHTML += `
+          <tr>
+            <td style="padding:8px;border:1px solid #ccc;">Definition ${origIdx + 1}</td>
+            <td style="padding:8px;border:1px solid #ccc;">${studentAns}</td>
+            <td style="padding:8px;border:1px solid #ccc;">${correct}</td>
+            <td style="padding:8px;border:1px solid #ccc;color:${ok ? "green" : "#b00"};">${ok ? "✅ Correct" : "❌ Incorrect"}</td>
+          </tr>`;
+      });
+
+      // ---- Grade Part B ----
+      let scoreB = 0;
+      let partBRowsHTML = "";
+
+      selectedQuestions.forEach((q, idx) => {
+        const checked = document.querySelector(`input[name="${q.id}"]:checked`);
+        const studentOi   = checked ? parseInt(checked.value, 10) : -1;
+        const studentText = studentOi >= 0 ? q.options[studentOi] : "No answer";
+        const correctText = q.options[q.correct];
+        const ok          = studentOi === q.correct;
+        if (ok) scoreB += 2;
+
+        partBRowsHTML += `
+          <tr>
+            <td style="padding:8px;border:1px solid #ccc;font-size:13px;">Q${idx + 1}: ${q.text}</td>
+            <td style="padding:8px;border:1px solid #ccc;font-size:13px;">${studentText}</td>
+            <td style="padding:8px;border:1px solid #ccc;font-size:13px;">${correctText}</td>
+            <td style="padding:8px;border:1px solid #ccc;color:${ok ? "green" : "#b00"};font-size:13px;">${ok ? "✅ +2 pts" : "❌ 0 pts"}</td>
+          </tr>`;
+      });
+
+      const finalScore = scoreA + scoreB;
+
+      // ---- Session log ----
+      let sessionLogHTML = "";
+      if (sessionEvents.length > 0) {
+        const rows = sessionEvents.map(ev => `
+          <tr>
+            <td style="padding:6px 8px;border:1px solid #ccc;">${ev.time}</td>
+            <td style="padding:6px 8px;border:1px solid #ccc;">${ev.label}</td>
+            <td style="padding:6px 8px;border:1px solid #ccc;">${ev.detail}</td>
+          </tr>`).join("");
+        sessionLogHTML = `
+          <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
+          <h4 style="color:#004080;">Exam Session Activity Log</h4>
+          <table style="border-collapse:collapse;width:100%;font-size:13px;">
+            <thead><tr style="background:#f3f4f6;text-align:left;">
+              <th style="padding:6px 8px;border:1px solid #ccc;">Time</th>
+              <th style="padding:6px 8px;border:1px solid #ccc;">Event</th>
+              <th style="padding:6px 8px;border:1px solid #ccc;">Details</th>
+            </tr></thead>
+            <tbody>${rows}</tbody>
+          </table>`;
+      } else {
+        sessionLogHTML = `
+          <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
+          <h4 style="color:#004080;">Exam Session Activity Log</h4>
+          <p style="font-size:13px;color:#4b5563;">No incidents detected during this session.</p>`;
+      }
+
+      // ---- Full HTML report ----
+      const htmlReport = `
+        <h2 style="color:#004080;margin:0 0 8px 0;">Results – ${currentExamTitle} – ${studentName}</h2>
+        <table style="border-collapse:collapse;width:100%;max-width:640px;font-size:14px;margin-bottom:12px;">
+          <tr><td style="padding:4px 0;"><b>Student:</b> ${studentName}</td></tr>
+          <tr><td style="padding:4px 0;"><b>Email:</b> ${studentEmail}</td></tr>
+          <tr><td style="padding:4px 0;"><b>Group:</b> ${group}</td></tr>
+          <tr><td style="padding:4px 0;"><b>Time Used:</b> ~${minutesUsed} min</td></tr>
+        </table>
+
+        <hr style="border:none;border-top:1px solid #ddd;margin:14px 0;">
+
+        <h3 style="color:#004080;">Part A – Vocabulary Listening (${scoreA} / 10)</h3>
+        <table style="border-collapse:collapse;width:100%;font-size:14px;margin-top:8px;">
+          <thead><tr style="background:#004080;color:#fff;text-align:left;">
+            <th style="padding:8px;border:1px solid #ccc;">Definition</th>
+            <th style="padding:8px;border:1px solid #ccc;">Student Answer</th>
+            <th style="padding:8px;border:1px solid #ccc;">Correct Answer</th>
+            <th style="padding:8px;border:1px solid #ccc;">Result</th>
+          </tr></thead>
+          <tbody>${partARowsHTML}</tbody>
+        </table>
+
+        <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
+
+        <h3 style="color:#004080;">Part B – Reading Comprehension (${scoreB} / 10)</h3>
+        <p style="font-size:13px;color:#6b7280;margin-bottom:8px;">
+          <em>5 questions were randomly selected from a pool of 10 for this student.</em>
+        </p>
+        <table style="border-collapse:collapse;width:100%;font-size:14px;margin-top:8px;">
+          <thead><tr style="background:#004080;color:#fff;text-align:left;">
+            <th style="padding:8px;border:1px solid #ccc;">Question</th>
+            <th style="padding:8px;border:1px solid #ccc;">Student Answer</th>
+            <th style="padding:8px;border:1px solid #ccc;">Correct Answer</th>
+            <th style="padding:8px;border:1px solid #ccc;">Result</th>
+          </tr></thead>
+          <tbody>${partBRowsHTML}</tbody>
+        </table>
+
+        <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
+
+        <h3 style="color:#004080;">Final Score Summary</h3>
+        <table style="border-collapse:collapse;width:100%;max-width:400px;font-size:15px;">
+          <tr>
+            <td style="padding:8px;border:1px solid #ccc;">Part A – Vocabulary Listening</td>
+            <td style="padding:8px;border:1px solid #ccc;font-weight:600;">${scoreA} / 10</td>
+          </tr>
+          <tr>
+            <td style="padding:8px;border:1px solid #ccc;">Part B – Reading Comprehension</td>
+            <td style="padding:8px;border:1px solid #ccc;font-weight:600;">${scoreB} / 10</td>
+          </tr>
+          <tr style="background:#004080;color:#fff;">
+            <td style="padding:10px 8px;border:1px solid #003060;font-weight:700;">FINAL SCORE</td>
+            <td style="padding:10px 8px;border:1px solid #003060;font-weight:800;font-size:1.1rem;">${finalScore} / 20</td>
+          </tr>
+        </table>
+
+        ${sessionLogHTML}
+
+        <div style="border-top:1px solid #ccc;margin-top:16px;padding-top:8px;font-size:12px;color:#555;">
+          <em>This report was generated automatically – CC2 English Exam – Team Management.</em>
+        </div>
+      `;
+
+      const subject = EXAM_CONFIG.emailSubjectTemplate
+        .replace("(NAME)", studentName)
+        .replace("(GROUP)", group);
+
+      if (window.emailjs) {
+        emailjs.send(
+          "service_opm4h6b",
+          "template_r0u784p",
+          { from_name: studentName, from_email: studentEmail, subject, message_html: htmlReport },
+          "Bb0oPYBiZGQcyIz5r"
+        )
+        .then(() => {
+          alert("✅ Épreuve envoyée avec succès.");
+          localStorage.removeItem(DEADLINE_KEY);
+          examDeadline = null;
+          resetToLanding();
+        })
+        .catch(err => {
+          const msg = err?.text || err?.message || JSON.stringify(err) || "Erreur inconnue";
+          alert("❌ Erreur lors de l'envoi : " + msg);
+          examSubmitted = false;
+          const btn = document.getElementById("submitBtn");
+          if (btn) { btn.disabled = false; btn.textContent = "Submit Exam"; }
+        });
+      } else {
+        alert("EmailJS non chargé – envoi simulé.");
+        examSubmitted = false;
+        const btn = document.getElementById("submitBtn");
+        if (btn) { btn.disabled = false; btn.textContent = "Submit Exam"; }
+      }
+    }
+
+    // ============================================================
+    //  RESET
+    // ============================================================
+    function resetToLanding() {
+      clearInterval(timer);
+      if (exitCountdownTimer) { clearInterval(exitCountdownTimer); exitCountdownTimer = null; }
+
+      examActive = examSubmitted = isStartingExam = exitPromptOpen = false;
+      antiCheatSuspendedUntil = 0;
+      violationCount = 0;
+      sessionEvents.length = 0;
+      selectedGroup = "";
+      currentExamTitle = EXAM_CONFIG.examTitleBase;
+      setOverlayActive(false);
+
+      const timerDisplay = document.getElementById("timer");
+      if (timerDisplay) { timerDisplay.textContent = ""; timerDisplay.style.display = "none"; }
+
+      const titleHeader = document.getElementById("examTitleHeader");
+      if (titleHeader) titleHeader.textContent = currentExamTitle;
+
+      document.getElementById("login").style.display    = "block";
+      document.getElementById("confirm").style.display  = "none";
+      document.getElementById("exam").style.display     = "none";
+      document.getElementById("exitOverlay").style.display = "none";
+
+      ["studentFirstName","studentLastName","studentEmail","classCode"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
+      const gs = document.getElementById("groupSelect");
+      if (gs) gs.value = "";
+    }
+
+    // ============================================================
+    //  DOM READY
+    // ============================================================
+    document.addEventListener("DOMContentLoaded", function () {
+      const ua = navigator.userAgent;
+      const isIOSUA = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      isMobile = /Mobi|Android/i.test(ua) || isIOSUA;
+
+      document.addEventListener("contextmenu", e => e.preventDefault(), { capture: true });
+
+      if (window.emailjs) {
+        try { emailjs.init({ publicKey: "Bb0oPYBiZGQcyIz5r" }); } catch (e) { console.error(e); }
+      }
+
+      // Lang sentinel
+      const langSentinel = document.getElementById("langSentinel");
+      const langBaseline = langSentinel ? langSentinel.textContent.trim() : null;
+      if (langSentinel && langBaseline) {
+        setInterval(() => {
+          if (!examActive || examSubmitted) return;
+          if (langSentinel.textContent.trim() !== langBaseline) {
+            askToExitExam("Traduction automatique détectée. Veuillez désactiver la traduction.", "translationWatch");
+          }
+        }, 2000);
+      }
+
+      resetToLanding();
+
+      // ---- Login flow ----
+      document.getElementById("studentLastName").addEventListener("input", function () {
+        this.value = this.value.toUpperCase();
+      });
+
+      document.getElementById("startBtn").addEventListener("click", () => {
+        const firstName = document.getElementById("studentFirstName").value.trim();
+        const lastName  = document.getElementById("studentLastName").value.trim().toUpperCase();
+        const email     = document.getElementById("studentEmail").value.trim();
+        const code      = document.getElementById("classCode").value.trim();
+        const group     = document.getElementById("groupSelect").value.trim();
+
+        if (!firstName || !lastName || !email) { alert("Merci de remplir toutes les informations."); return; }
+        if (!group) { alert("Merci de sélectionner votre groupe."); return; }
+        if (code !== EXAM_CONFIG.classCode && code !== EXAM_CONFIG.debugCode) { alert("Code de classe invalide."); return; }
+
+        selectedGroup = group;
+        document.getElementById("confirmName").textContent  = `${lastName} ${firstName}`;
+        document.getElementById("confirmEmail").textContent = email;
+        document.getElementById("confirmGroup").textContent = group;
+
+        document.getElementById("login").style.display   = "none";
+        document.getElementById("confirm").style.display = "block";
+      });
+
+      document.getElementById("confirmBackBtn").addEventListener("click", () => {
+        document.getElementById("confirm").style.display = "none";
+        document.getElementById("login").style.display   = "block";
+      });
+
+      document.getElementById("confirmBeginBtn").addEventListener("click", () => {
+        const firstName = document.getElementById("studentFirstName").value.trim();
+        const lastName  = document.getElementById("studentLastName").value.trim().toUpperCase();
+        const email     = document.getElementById("studentEmail").value.trim();
+        const code      = document.getElementById("classCode").value.trim();
+        const group     = selectedGroup;
+        const fullName  = `${lastName} ${firstName}`;
+
+        document.getElementById("studentNameField").value  = fullName;
+        document.getElementById("studentEmailField").value = email;
+        document.getElementById("classCodeField").value    = code;
+        document.getElementById("groupNameField").value    = group;
+
+        document.getElementById("confirm").style.display  = "none";
+        document.getElementById("exam").style.display     = "block";
+        document.getElementById("partA").classList.add("active");
+        document.getElementById("partB").classList.remove("active");
+
+        currentExamTitle = `${EXAM_CONFIG.examTitleBase} (${group})`;
+        document.getElementById("examTitleHeader").textContent = currentExamTitle;
+
+        examActive    = true;
+        examSubmitted = false;
+        violationCount = 0;
+
+        if (!examDeadline) {
+          examDeadline = Date.now() + EXAM_CONFIG.timeLimitMinutes * 60 * 1000;
+          localStorage.setItem(DEADLINE_KEY, String(examDeadline));
+        } else if (Date.now() > examDeadline) {
+          alert("Le délai de l'épreuve est écoulé.");
+          examActive = false;
+          document.getElementById("exam").style.display  = "none";
+          document.getElementById("login").style.display = "block";
+          return;
+        }
+
+        logEvent("Exam started", `Group: ${group}, Name: ${fullName}`);
+
+        isStartingExam = true;
+        setTimeout(() => { isStartingExam = false; }, 1200);
+
+        const timerDisplay = document.getElementById("timer");
+        if (timerDisplay) timerDisplay.style.display = "inline-block";
+
+        // Request fullscreen
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        }
+
+        startTimer();
+        buildPartA();
+        buildPartB(); // build now so it's ready when student navigates
+      });
+
+      // ---- Navigation ----
+      document.getElementById("toPartB").addEventListener("click", () => {
+        document.getElementById("partA").classList.remove("active");
+        document.getElementById("partB").classList.add("active");
+        logEvent("Moved to Part B", "Student navigated from Part A to Part B");
+        updatePartBProgress();
+      });
+
+      document.getElementById("toPartA").addEventListener("click", () => {
+        document.getElementById("partB").classList.remove("active");
+        document.getElementById("partA").classList.add("active");
+        logEvent("Returned to Part A", "Student navigated from Part B to Part A");
+      });
+
+      // ---- Submit ----
+      document.getElementById("examForm").addEventListener("submit", e => {
+        e.preventDefault();
+        submitExam();
+      });
+
+      // ---- Exit overlay buttons ----
+      document.getElementById("exitOverlayStay").addEventListener("click", () => {
+        if (exitCountdownTimer) { clearInterval(exitCountdownTimer); exitCountdownTimer = null; }
+        antiCheatSuspendedUntil = Date.now() + 2000;
+        exitPromptOpen = false;
+        document.getElementById("exitOverlay").style.display = "none";
+        setOverlayActive(false);
+        logEvent("Student chose to stay", `After warning #${violationCount}`);
+        if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        }
+      });
+
+      document.getElementById("exitOverlayLeave").addEventListener("click", () => {
+        if (exitCountdownTimer) { clearInterval(exitCountdownTimer); exitCountdownTimer = null; }
+        exitPromptOpen = false;
+        document.getElementById("exitOverlay").style.display = "none";
+        setOverlayActive(false);
+        logEvent("Student chose to leave", `After warning #${violationCount}`);
+        terminateExam("Vous avez quitté l'épreuve. Elle est terminée et doit être recommencée.");
+      });
+
+      // ---- Anti-cheat listeners ----
+      document.addEventListener("visibilitychange", () => {
+        if (isStartingExam || !examActive || examSubmitted) return;
+        if (Date.now() < antiCheatSuspendedUntil) return;
+        if (document.hidden) {
+          logEvent("Visibility lost", "visibilitychange");
+          askToExitExam("Vous avez quitté l'écran de l'épreuve.", "visibilitychange");
+        }
+      });
+
+      window.addEventListener("blur", () => {
+        if (isStartingExam || !examActive || examSubmitted) return;
+        if (isMobile && Date.now() < safeBlurUntil) return;
+        if (Date.now() < antiCheatSuspendedUntil) return;
+        logEvent("Window focus lost", "blur");
+        askToExitExam("Vous avez quitté la fenêtre de l'épreuve.", "blur");
+      });
+
+      document.addEventListener("fullscreenchange", () => {
+        if (!examActive || examSubmitted || isStartingExam) return;
+        if (Date.now() < antiCheatSuspendedUntil) return;
+        if (!document.fullscreenElement) {
+          logEvent("Fullscreen exited", "fullscreenchange");
+          askToExitExam("Vous avez quitté le mode plein écran.", "fullscreenchange");
+        }
+      });
+
+      document.addEventListener("keydown", e => {
+        if ((e.key === "Escape" || e.key === "Esc") && examActive && !isStartingExam && !examSubmitted) {
+          if (Date.now() < antiCheatSuspendedUntil) return;
+          e.preventDefault();
+          logEvent("Escape pressed", "keydown(Escape)");
+          askToExitExam("Vous avez appuyé sur Échap.", "keydown(Escape)");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
