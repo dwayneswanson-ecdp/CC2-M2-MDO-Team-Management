@@ -716,7 +716,7 @@
       timeLimitMinutes:     75,
       emailSubjectTemplate: "CC2 - English — Team Management (GROUP) – (NAME)",
       classLabel:           "M2MDO",
-      githubBase:           "https://github.com/dwayneswanson-ecdp/CC2-M2-MDO-Team-Management/tree/main/%20Audio"
+      githubBase:           "https://raw.githubusercontent.com/dwayneswanson-ecdp/CC2-M2-MDO-Team-Management/main/Audio/"
     };
 
     // ============================================================
@@ -951,15 +951,15 @@
         ).join("");
 
         div.innerHTML = `
-          <div class="question-number">Définition ${displayIdx + 1} sur 10</div>
-          <div class="audio-player-row">
-            <span class="audio-label">🔊 Listen:</span>
-            <audio controls preload="none" src="${audioUrl}"></audio>
-          </div>
-          <select class="vocab-select" name="partA_q${origIdx}" data-orig="${origIdx}">
-            <option value="">— Sélectionnez le mot de vocabulaire correspondant —</option>
-            ${optionsHtml}
-          </select>
+            <div class="question-number">Définition ${displayIdx + 1} sur 10</div>
+      <div class="audio-player-row">
+        <span class="audio-label">🔊 Listen:</span>
+        <audio controls preload="none" src="${audioUrl}"></audio>
+      </div>
+      <select class="vocab-select" name="partA_q${origIdx}" data-orig="${origIdx}">
+        <option value="">— Sélectionnez le mot de vocabulaire correspondant —</option>
+        ${optionsHtml}
+      </select>
         `;
 
         // Safe blur on audio interaction
