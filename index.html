@@ -325,11 +325,11 @@
 
     /* ===== PART C ===== */
     .partC-wrapper {
-      border: 2px solid #e2e8f0;
+      border: 2px solid #c4b5fd;
       border-radius: 16px;
       overflow: hidden;
       margin-top: 36px;
-      box-shadow: 0 4px 16px rgba(15,23,42,0.06);
+      box-shadow: 0 4px 16px rgba(109,40,217,0.08);
     }
 
     .partC-header {
@@ -342,7 +342,7 @@
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.7);
+      color: rgba(255,255,255,0.65);
       margin-bottom: 4px;
     }
 
@@ -352,36 +352,98 @@
       color: #ffffff;
     }
 
-    .partC-body { padding: 24px; background: #ffffff; }
+    .partC-body { padding: 24px 28px; background: #ffffff; }
 
-    .partC-prompt {
+    /* Question block */
+    .partC-question-block {
       background: #faf5ff;
-      border-left: 4px solid #7c3aed;
-      border-radius: 8px;
-      padding: 18px 20px;
-      margin-bottom: 20px;
-      font-size: 0.9rem;
-      color: #374151;
-      line-height: 1.7;
+      border: 2px solid #e9d5ff;
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-bottom: 24px;
     }
 
-    .partC-prompt strong { color: #6d28d9; }
+    .partC-question-stem {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #3b0764;
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
 
-    .partC-vocab-list {
+    .partC-instructions-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7c3aed;
+      margin-bottom: 10px;
+    }
+
+    .partC-checklist {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .partC-checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: #374151;
+      line-height: 1.55;
+    }
+
+    .partC-checklist li::before {
+      content: "→";
+      color: #7c3aed;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .partC-checklist li strong { color: #6d28d9; }
+
+    .partC-vocab-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin: 12px 0;
+      gap: 7px;
+      margin: 14px 0 0 0;
+      padding-top: 14px;
+      border-top: 1px solid #e9d5ff;
     }
 
     .partC-vocab-pill {
       background: #ede9fe;
       color: #6d28d9;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
-      padding: 4px 12px;
+      padding: 4px 11px;
       border-radius: 999px;
       border: 1px solid #c4b5fd;
+      white-space: nowrap;
+    }
+
+    .partC-length-note {
+      font-size: 0.82rem;
+      color: #6d28d9;
+      font-weight: 600;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Textarea area */
+    .partC-textarea-label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #4b5563;
+      margin-bottom: 8px;
     }
 
     .word-count-row {
@@ -393,23 +455,19 @@
       flex-wrap: wrap;
     }
 
-    #partCWordCount {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: #64748b;
-    }
+    #partCWordCount { font-size: 0.88rem; font-weight: 600; color: #64748b; }
 
     #partCWordHint {
       font-size: 0.82rem;
       font-weight: 600;
       padding: 4px 12px;
       border-radius: 999px;
+      transition: all 0.2s ease;
     }
-
-    #partCWordHint.hint-ok       { background: #dcfce7; color: #166534; }
-    #partCWordHint.hint-short    { background: #fef9c3; color: #854d0e; }
-    #partCWordHint.hint-long     { background: #fee2e2; color: #991b1b; }
-    #partCWordHint.hint-neutral  { background: #f1f5f9; color: #64748b; }
+    #partCWordHint.hint-ok      { background: #dcfce7; color: #166534; }
+    #partCWordHint.hint-short   { background: #fef9c3; color: #854d0e; }
+    #partCWordHint.hint-long    { background: #fee2e2; color: #991b1b; }
+    #partCWordHint.hint-neutral { background: #f1f5f9; color: #64748b; }
 
     /* Progress badges */
     .progress-badge {
@@ -474,6 +532,8 @@
       .audio-player-row { flex-direction: column; align-items: stretch; }
       audio { min-width: unset; width: 100%; }
       .name-row .field { min-width: 100%; }
+      .partC-body { padding: 20px; }
+      .partC-question-block { padding: 18px; }
     }
   </style>
 </head>
@@ -630,20 +690,27 @@
           <!-- PART C -->
           <div class="partC-wrapper">
             <div class="partC-header">
-              <div class="partC-header-label">Part C — Written Exercise</div>
-              <div class="partC-header-title">Written Opinion — 5 points (Teacher graded)</div>
+              <div class="partC-header-label">Part C — Written Exercise &nbsp;·&nbsp; 5 points</div>
+              <div class="partC-header-title">Written Opinion — Teacher Graded</div>
             </div>
+
             <div class="partC-body">
-              <div class="partC-prompt">
-                <strong>Question :</strong> Based on the article, do you agree with the columnist's advice that the employee should leave the job and explain the situation in a neutral and professional way?
-                <br><br>
-                In your answer:
-                <br>• Clearly state your opinion
-                <br>• Justify your reasoning using examples from the situation described
-                <br>• Explain at least one <strong>trade-off</strong> the employee faces
-                <br>• Integrate at least <strong>three</strong> vocabulary terms from the list below
-                <br><br>
-                <div class="partC-vocab-list">
+
+              <!-- Question block -->
+              <div class="partC-question-block">
+                <div class="partC-question-stem">
+                  The employee in the article faces a difficult choice: stay in a dysfunctional job or leave after only eight months. Is leaving the right decision? Do you agree with the columnist's advice?
+                </div>
+
+                <div class="partC-instructions-label">Your answer must include:</div>
+                <ul class="partC-checklist">
+                  <li>Clearly state whether you <strong>agree or disagree</strong> with the columnist's advice</li>
+                  <li>Explain your reasoning using <strong>the situation in the article as a reference</strong> — write in your own words, do not copy sentences</li>
+                  <li>Identify and explain <strong>at least one trade-off</strong> the employee faces</li>
+                  <li>Use <strong>at least three vocabulary terms</strong> from the list below correctly in context</li>
+                </ul>
+
+                <div class="partC-vocab-row">
                   <span class="partC-vocab-pill">workload</span>
                   <span class="partC-vocab-pill">morale</span>
                   <span class="partC-vocab-pill">feedback</span>
@@ -655,11 +722,12 @@
                   <span class="partC-vocab-pill">negotiation</span>
                   <span class="partC-vocab-pill">trade-off</span>
                 </div>
-                <br>
-                Length: <strong>120–180 words</strong>
+
+                <div class="partC-length-note">✏️ Length: 120–180 words</div>
               </div>
 
-              <label for="partCResponse" style="margin-top: 0;">Your answer</label>
+              <!-- Textarea -->
+              <div class="partC-textarea-label">Your answer</div>
               <textarea id="partCResponse" name="partCResponse" placeholder="Write your answer here (120–180 words)…"></textarea>
 
               <div class="word-count-row">
@@ -674,7 +742,6 @@
             <button type="submit" id="submitBtn">Submit Exam</button>
           </div>
         </div>
-
       </form>
     </section>
   </main>
@@ -733,7 +800,7 @@
     ];
 
     // ============================================================
-    //  PART B QUESTIONS (10 pool → 5 random)
+    //  PART B QUESTIONS (pool of 10 → 5 random per student)
     // ============================================================
     const ALL_QUESTIONS = [
       { id:"pb1", text:'The employee says "priorities change without corresponding trade-offs." What is the most accurate analysis of this situation?', options:["The manager is successfully adapting priorities to meet deadlines","New responsibilities are added without removing existing ones, making prioritization impossible","The employee is struggling to manage their own workload independently","The team lacks the alignment needed to distribute tasks fairly"], correct:1 },
@@ -809,16 +876,16 @@
       hintEl.className = "";
       if (wc === 0) {
         hintEl.textContent = "Target: 120–180 words";
-        hintEl.className = "hint-neutral";
+        hintEl.className   = "hint-neutral";
       } else if (wc < 120) {
-        hintEl.textContent = `Target: 120–180 words (${120 - wc} words short)`;
-        hintEl.className = "hint-short";
+        hintEl.textContent = `Target: 120–180 words (${120 - wc} short)`;
+        hintEl.className   = "hint-short";
       } else if (wc > 180) {
-        hintEl.textContent = `Target: 120–180 words (${wc - 180} words over)`;
-        hintEl.className = "hint-long";
+        hintEl.textContent = `Target: 120–180 words (${wc - 180} over)`;
+        hintEl.className   = "hint-long";
       } else {
         hintEl.textContent = "Target: 120–180 words ✓";
-        hintEl.className = "hint-ok";
+        hintEl.className   = "hint-ok";
       }
     }
 
@@ -925,7 +992,7 @@
     }
 
     // ============================================================
-    //  TIMER (with low-time color change)
+    //  TIMER (red at 5 min)
     // ============================================================
     function startTimer() {
       clearInterval(timer);
@@ -939,9 +1006,9 @@
         if (timerDisplay) {
           timerDisplay.textContent = `Temps restant : ${m}:${String(s).padStart(2,"0")}`;
           const isLow = totalSec <= 5 * 60;
-          timerDisplay.style.background   = isLow ? "linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)" : "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)";
-          timerDisplay.style.borderColor  = isLow ? "#dc2626" : "#2563eb";
-          timerDisplay.style.boxShadow    = isLow ? "0 4px 16px rgba(220,38,38,0.35)" : "0 4px 12px rgba(37,99,235,0.25)";
+          timerDisplay.style.background  = isLow ? "linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)" : "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)";
+          timerDisplay.style.borderColor = isLow ? "#dc2626" : "#2563eb";
+          timerDisplay.style.boxShadow   = isLow ? "0 4px 16px rgba(220,38,38,0.35)" : "0 4px 12px rgba(37,99,235,0.25)";
         }
 
         if (remainingMs <= 0) {
@@ -1053,10 +1120,10 @@
         const ok         = studentAns === correct;
         if (ok) scoreA++;
         partARowsHTML += `<tr>
-          <td style="padding:8px;border:1px solid #ccc;">Definition ${origIdx + 1}</td>
-          <td style="padding:8px;border:1px solid #ccc;">${studentAns}</td>
-          <td style="padding:8px;border:1px solid #ccc;">${correct}</td>
-          <td style="padding:8px;border:1px solid #ccc;color:${ok ? "green" : "#b00"};">${ok ? "✅ Correct" : "❌ Incorrect"}</td>
+          <td style="padding:8px;border:1px solid #ddd;">Definition ${origIdx + 1}</td>
+          <td style="padding:8px;border:1px solid #ddd;">${studentAns}</td>
+          <td style="padding:8px;border:1px solid #ddd;">${correct}</td>
+          <td style="padding:8px;border:1px solid #ddd;color:${ok ? "#166534" : "#991b1b"};font-weight:600;">${ok ? "✅ Correct" : "❌ Incorrect"}</td>
         </tr>`;
       });
 
@@ -1070,10 +1137,10 @@
         const ok          = studentOi === q.correct;
         if (ok) scoreB++;
         partBRowsHTML += `<tr>
-          <td style="padding:8px;border:1px solid #ccc;font-size:13px;">Q${idx + 1}: ${q.text}</td>
-          <td style="padding:8px;border:1px solid #ccc;font-size:13px;">${studentText}</td>
-          <td style="padding:8px;border:1px solid #ccc;font-size:13px;">${correctText}</td>
-          <td style="padding:8px;border:1px solid #ccc;color:${ok ? "green" : "#b00"};font-size:13px;">${ok ? "✅ +1 pt" : "❌ 0 pt"}</td>
+          <td style="padding:8px;border:1px solid #ddd;font-size:13px;">Q${idx + 1}: ${q.text}</td>
+          <td style="padding:8px;border:1px solid #ddd;font-size:13px;">${studentText}</td>
+          <td style="padding:8px;border:1px solid #ddd;font-size:13px;">${correctText}</td>
+          <td style="padding:8px;border:1px solid #ddd;color:${ok ? "#166534" : "#991b1b"};font-size:13px;font-weight:600;">${ok ? "✅ +1 pt" : "❌ 0 pt"}</td>
         </tr>`;
       });
 
@@ -1084,96 +1151,152 @@
         .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
         .replace(/\n/g, "<br>");
 
+      // Part C section — rubric + instructor comments
       const partCSectionHTML = `
-        <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
-        <h3 style="color:#6d28d9;">Part C – Written Opinion (Teacher graded: &nbsp;____ / 5)</h3>
-        <p style="font-size:12px;color:#64748b;margin:0 0 8px 0;">Word count submitted: ${partCWc}</p>
-        <div style="border:1px solid #c4b5fd;border-radius:8px;padding:14px 16px;font-size:13px;line-height:1.7;background:#faf5ff;">
-          ${partCEsc || "<em style='color:#94a3b8;'>No answer</em>"}
+        <hr style="border:none;border-top:2px solid #ede9fe;margin:20px 0;">
+        <h3 style="color:#6d28d9;margin:0 0 4px 0;">Part C – Written Opinion &nbsp;/&nbsp; 5 pts (Teacher Graded)</h3>
+        <p style="font-size:12px;color:#6b7280;margin:0 0 12px 0;">Word count submitted: <strong>${partCWc}</strong> &nbsp;|&nbsp; Target: 120–180 words</p>
+
+        <div style="border:1px solid #c4b5fd;border-radius:8px;padding:14px 16px;font-size:13px;line-height:1.75;background:#faf5ff;margin-bottom:16px;">
+          ${partCEsc || "<em style='color:#94a3b8;'>No answer provided.</em>"}
         </div>
-        <p style="margin:12px 0 0 0;font-size:13px;color:#111827;"><b>Teacher score (Part C): ____ / 5</b></p>`;
+
+        <table style="border-collapse:collapse;width:100%;max-width:560px;font-size:13px;margin-bottom:16px;">
+          <thead>
+            <tr style="background:#6d28d9;color:#fff;text-align:left;">
+              <th style="padding:9px 12px;border:1px solid #5b21b6;">#</th>
+              <th style="padding:9px 12px;border:1px solid #5b21b6;">Criterion</th>
+              <th style="padding:9px 12px;border:1px solid #5b21b6;text-align:center;">/ 1 pt</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#faf5ff;">
+              <td style="padding:8px 12px;border:1px solid #ddd;">1</td>
+              <td style="padding:8px 12px;border:1px solid #ddd;">Opinion clearly stated (agree or disagree)</td>
+              <td style="padding:8px 12px;border:1px solid #ddd;text-align:center;">____</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 12px;border:1px solid #ddd;">2</td>
+              <td style="padding:8px 12px;border:1px solid #ddd;">Argument justified with reference to the article</td>
+              <td style="padding:8px 12px;border:1px solid #ddd;text-align:center;">____</td>
+            </tr>
+            <tr style="background:#faf5ff;">
+              <td style="padding:8px 12px;border:1px solid #ddd;">3</td>
+              <td style="padding:8px 12px;border:1px solid #ddd;">At least one trade-off identified and explained</td>
+              <td style="padding:8px 12px;border:1px solid #ddd;text-align:center;">____</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 12px;border:1px solid #ddd;">4</td>
+              <td style="padding:8px 12px;border:1px solid #ddd;">3+ vocabulary terms used correctly in context</td>
+              <td style="padding:8px 12px;border:1px solid #ddd;text-align:center;">____</td>
+            </tr>
+            <tr style="background:#faf5ff;">
+              <td style="padding:8px 12px;border:1px solid #ddd;">5</td>
+              <td style="padding:8px 12px;border:1px solid #ddd;">Language is clear and response is well-structured</td>
+              <td style="padding:8px 12px;border:1px solid #ddd;text-align:center;">____</td>
+            </tr>
+            <tr style="background:#6d28d9;color:#fff;font-weight:700;">
+              <td colspan="2" style="padding:9px 12px;border:1px solid #5b21b6;">Part C Total</td>
+              <td style="padding:9px 12px;border:1px solid #5b21b6;text-align:center;">____ / 5</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="border:2px solid #e2e8f0;border-radius:8px;padding:14px 16px;background:#f8f9fc;">
+          <p style="margin:0 0 8px 0;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;">Instructor Comments</p>
+          <p style="margin:0;font-size:13px;color:#94a3b8;font-style:italic;min-height:60px;">&nbsp;</p>
+        </div>`;
 
       // Session log
       let sessionLogHTML = "";
       if (sessionEvents.length > 0) {
         const rows = sessionEvents.map(ev => `<tr>
-          <td style="padding:6px 8px;border:1px solid #ccc;">${ev.time}</td>
-          <td style="padding:6px 8px;border:1px solid #ccc;">${ev.label}</td>
-          <td style="padding:6px 8px;border:1px solid #ccc;">${ev.detail}</td>
+          <td style="padding:6px 8px;border:1px solid #ddd;">${ev.time}</td>
+          <td style="padding:6px 8px;border:1px solid #ddd;">${ev.label}</td>
+          <td style="padding:6px 8px;border:1px solid #ddd;">${ev.detail}</td>
         </tr>`).join("");
         sessionLogHTML = `
-          <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
-          <h4 style="color:#004080;">Exam Session Activity Log</h4>
-          <table style="border-collapse:collapse;width:100%;font-size:13px;">
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0;">
+          <h4 style="color:#004080;margin:0 0 8px 0;">Exam Session Activity Log</h4>
+          <table style="border-collapse:collapse;width:100%;font-size:12px;">
             <thead><tr style="background:#f3f4f6;text-align:left;">
-              <th style="padding:6px 8px;border:1px solid #ccc;">Time</th>
-              <th style="padding:6px 8px;border:1px solid #ccc;">Event</th>
-              <th style="padding:6px 8px;border:1px solid #ccc;">Details</th>
+              <th style="padding:6px 8px;border:1px solid #ddd;">Time</th>
+              <th style="padding:6px 8px;border:1px solid #ddd;">Event</th>
+              <th style="padding:6px 8px;border:1px solid #ddd;">Details</th>
             </tr></thead>
             <tbody>${rows}</tbody>
           </table>`;
       } else {
         sessionLogHTML = `
-          <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
-          <h4 style="color:#004080;">Exam Session Activity Log</h4>
-          <p style="font-size:13px;color:#4b5563;">No incidents detected during this session.</p>`;
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0;">
+          <h4 style="color:#004080;margin:0 0 8px 0;">Exam Session Activity Log</h4>
+          <p style="font-size:12px;color:#6b7280;">No incidents detected during this session.</p>`;
       }
 
-      const autoScore = scoreA + scoreB;
-
       const htmlReport = `
-        <h2 style="color:#004080;margin:0 0 8px 0;">Results – ${currentExamTitle} – ${studentName}</h2>
-        <table style="border-collapse:collapse;width:100%;max-width:640px;font-size:14px;margin-bottom:12px;">
-          <tr><td style="padding:4px 0;"><b>Student:</b> ${studentName}</td></tr>
-          <tr><td style="padding:4px 0;"><b>Email:</b> ${studentEmail}</td></tr>
-          <tr><td style="padding:4px 0;"><b>Group:</b> ${group}</td></tr>
-          <tr><td style="padding:4px 0;"><b>Time Used:</b> ~${minutesUsed} min</td></tr>
+        <h2 style="color:#004080;margin:0 0 4px 0;">CC2 – English Exam Results</h2>
+        <h3 style="color:#1e293b;margin:0 0 16px 0;font-weight:500;">${studentName}</h3>
+
+        <table style="border-collapse:collapse;width:100%;max-width:480px;font-size:14px;margin-bottom:20px;background:#f8f9fc;border-radius:8px;">
+          <tr><td style="padding:6px 12px;"><b>Group:</b></td><td style="padding:6px 12px;">${group}</td></tr>
+          <tr><td style="padding:6px 12px;"><b>Email:</b></td><td style="padding:6px 12px;">${studentEmail}</td></tr>
+          <tr><td style="padding:6px 12px;"><b>Time used:</b></td><td style="padding:6px 12px;">~${minutesUsed} min</td></tr>
         </table>
 
-        <hr style="border:none;border-top:1px solid #ddd;margin:14px 0;">
-        <h3 style="color:#004080;">Part A – Vocabulary Listening (${scoreA} / 10)</h3>
-        <table style="border-collapse:collapse;width:100%;font-size:14px;margin-top:8px;">
+        <hr style="border:none;border-top:2px solid #e2e8f0;margin:0 0 16px 0;">
+
+        <h3 style="color:#004080;margin:0 0 8px 0;">Part A – Vocabulary Listening &nbsp; ${scoreA} / 10</h3>
+        <table style="border-collapse:collapse;width:100%;font-size:13px;margin-bottom:20px;">
           <thead><tr style="background:#004080;color:#fff;text-align:left;">
-            <th style="padding:8px;border:1px solid #ccc;">Definition</th>
-            <th style="padding:8px;border:1px solid #ccc;">Student Answer</th>
-            <th style="padding:8px;border:1px solid #ccc;">Correct Answer</th>
-            <th style="padding:8px;border:1px solid #ccc;">Result</th>
+            <th style="padding:8px 10px;border:1px solid #003060;">Definition</th>
+            <th style="padding:8px 10px;border:1px solid #003060;">Student Answer</th>
+            <th style="padding:8px 10px;border:1px solid #003060;">Correct Answer</th>
+            <th style="padding:8px 10px;border:1px solid #003060;">Result</th>
           </tr></thead>
           <tbody>${partARowsHTML}</tbody>
         </table>
 
-        <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
-        <h3 style="color:#004080;">Part B – Reading Comprehension (${scoreB} / 5)</h3>
-        <p style="font-size:13px;color:#6b7280;margin-bottom:8px;"><em>5 questions randomly selected from a pool of 10 for this student.</em></p>
-        <table style="border-collapse:collapse;width:100%;font-size:14px;margin-top:8px;">
+        <hr style="border:none;border-top:2px solid #e2e8f0;margin:0 0 16px 0;">
+
+        <h3 style="color:#004080;margin:0 0 4px 0;">Part B – Reading Comprehension &nbsp; ${scoreB} / 5</h3>
+        <p style="font-size:12px;color:#6b7280;margin:0 0 8px 0;"><em>5 questions randomly selected from a pool of 10 for this student.</em></p>
+        <table style="border-collapse:collapse;width:100%;font-size:13px;margin-bottom:20px;">
           <thead><tr style="background:#004080;color:#fff;text-align:left;">
-            <th style="padding:8px;border:1px solid #ccc;">Question</th>
-            <th style="padding:8px;border:1px solid #ccc;">Student Answer</th>
-            <th style="padding:8px;border:1px solid #ccc;">Correct Answer</th>
-            <th style="padding:8px;border:1px solid #ccc;">Result</th>
+            <th style="padding:8px 10px;border:1px solid #003060;">Question</th>
+            <th style="padding:8px 10px;border:1px solid #003060;">Student Answer</th>
+            <th style="padding:8px 10px;border:1px solid #003060;">Correct Answer</th>
+            <th style="padding:8px 10px;border:1px solid #003060;">Result</th>
           </tr></thead>
           <tbody>${partBRowsHTML}</tbody>
         </table>
 
         ${partCSectionHTML}
 
-        <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
-        <h3 style="color:#004080;">Score Summary</h3>
-        <table style="border-collapse:collapse;width:100%;max-width:400px;font-size:15px;">
-          <tr><td style="padding:8px;border:1px solid #ccc;">Part A – Vocabulary Listening</td><td style="padding:8px;border:1px solid #ccc;font-weight:600;">${scoreA} / 10</td></tr>
-          <tr><td style="padding:8px;border:1px solid #ccc;">Part B – Reading Comprehension</td><td style="padding:8px;border:1px solid #ccc;font-weight:600;">${scoreB} / 5</td></tr>
-          <tr><td style="padding:8px;border:1px solid #ccc;">Auto score (A + B)</td><td style="padding:8px;border:1px solid #ccc;font-weight:600;">${autoScore} / 15</td></tr>
-          <tr><td style="padding:8px;border:1px solid #ccc;">Part C – Written Opinion (teacher)</td><td style="padding:8px;border:1px solid #ccc;font-weight:600;">____ / 5</td></tr>
+        <hr style="border:none;border-top:2px solid #e2e8f0;margin:20px 0 16px 0;">
+        <h3 style="color:#004080;margin:0 0 10px 0;">Final Score Summary</h3>
+        <table style="border-collapse:collapse;width:100%;max-width:400px;font-size:14px;">
+          <tr>
+            <td style="padding:9px 12px;border:1px solid #ddd;">Part A – Vocabulary Listening</td>
+            <td style="padding:9px 12px;border:1px solid #ddd;font-weight:600;text-align:center;">${scoreA} / 10</td>
+          </tr>
+          <tr style="background:#f8f9fc;">
+            <td style="padding:9px 12px;border:1px solid #ddd;">Part B – Reading Comprehension</td>
+            <td style="padding:9px 12px;border:1px solid #ddd;font-weight:600;text-align:center;">${scoreB} / 5</td>
+          </tr>
+          <tr>
+            <td style="padding:9px 12px;border:1px solid #ddd;">Part C – Written Opinion</td>
+            <td style="padding:9px 12px;border:1px solid #ddd;font-weight:600;text-align:center;">____ / 5</td>
+          </tr>
           <tr style="background:#004080;color:#fff;">
-            <td style="padding:10px 8px;border:1px solid #003060;font-weight:700;">FINAL SCORE</td>
-            <td style="padding:10px 8px;border:1px solid #003060;font-weight:800;font-size:1.1rem;">____ / 20</td>
+            <td style="padding:10px 12px;border:1px solid #003060;font-weight:700;">FINAL SCORE</td>
+            <td style="padding:10px 12px;border:1px solid #003060;font-weight:800;font-size:1.05rem;text-align:center;">____ / 20</td>
           </tr>
         </table>
 
         ${sessionLogHTML}
 
-        <div style="border-top:1px solid #ccc;margin-top:16px;padding-top:8px;font-size:12px;color:#555;">
-          <em>This report was generated automatically – CC2 English Exam – Team Management.</em>
+        <div style="border-top:1px solid #e2e8f0;margin-top:20px;padding-top:10px;font-size:11px;color:#94a3b8;">
+          <em>Generated automatically · CC2 English Exam · Team Management</em>
         </div>`;
 
       const subject = EXAM_CONFIG.emailSubjectTemplate
@@ -1277,7 +1400,7 @@
         const group     = document.getElementById("groupSelect").value.trim();
 
         if (!firstName || !lastName || !email) { alert("Merci de remplir toutes les informations."); return; }
-        if (!group)  { alert("Merci de sélectionner votre groupe."); return; }
+        if (!group) { alert("Merci de sélectionner votre groupe."); return; }
         if (code !== EXAM_CONFIG.classCode && code !== EXAM_CONFIG.debugCode) { alert("Code de classe invalide."); return; }
 
         selectedGroup = group;
@@ -1295,7 +1418,7 @@
         scrollToTop();
       });
 
-      // Confirm → Start exam
+      // Confirm → Begin
       document.getElementById("confirmBeginBtn").addEventListener("click", () => {
         const firstName = document.getElementById("studentFirstName").value.trim();
         const lastName  = document.getElementById("studentLastName").value.trim().toUpperCase();
@@ -1331,7 +1454,6 @@
         }
 
         logEvent("Exam started", `Group: ${group}, Name: ${fullName}`);
-
         isStartingExam = true;
         setTimeout(() => { isStartingExam = false; }, 1200);
 
@@ -1353,7 +1475,7 @@
         scrollToTop();
       });
 
-      // Part A → Part B
+      // Navigation
       document.getElementById("toPartB").addEventListener("click", () => {
         document.getElementById("partA").classList.remove("active");
         document.getElementById("partB").classList.add("active");
@@ -1362,7 +1484,6 @@
         scrollToTop();
       });
 
-      // Part B → Part A
       document.getElementById("toPartA").addEventListener("click", () => {
         document.getElementById("partB").classList.remove("active");
         document.getElementById("partA").classList.add("active");
@@ -1376,7 +1497,7 @@
         submitExam();
       });
 
-      // Exit overlay buttons
+      // Overlay buttons
       document.getElementById("exitOverlayStay").addEventListener("click", () => {
         if (exitCountdownTimer) { clearInterval(exitCountdownTimer); exitCountdownTimer = null; }
         antiCheatSuspendedUntil = Date.now() + 2000;
@@ -1398,7 +1519,7 @@
         terminateExam("Vous avez quitté l'épreuve. Elle est terminée et doit être recommencée.");
       });
 
-      // ---- Anti-cheat event listeners ----
+      // Anti-cheat listeners
       document.addEventListener("visibilitychange", () => {
         if (isStartingExam || !examActive || examSubmitted) return;
         if (Date.now() < antiCheatSuspendedUntil) return;
