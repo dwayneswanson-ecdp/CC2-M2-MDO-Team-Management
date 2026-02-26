@@ -639,7 +639,7 @@
 
           <p class="muted" style="margin-bottom: 16px;">
             Lisez l'article ci-dessous attentivement, puis répondez aux cinq questions de compréhension.
-            Sélectionnez la meilleure réponse pour chaque question. Chaque question vaut <strong>2 points</strong>.
+            Sélectionnez la meilleure réponse pour chaque question. Chaque question vaut <strong>1 points</strong>.
           </p>
 
           <div style="background: #eff6ff; border-left: 4px solid #2563eb; padding: 14px 18px; border-radius: 8px; margin-bottom: 24px; font-size: 0.88rem; color: #1e40af; line-height: 1.6;">
@@ -676,6 +676,34 @@
             <p class="questions-intro">Répondez aux cinq questions en vous basant sur l'article ci-dessus.</p>
             <div id="mcqContainer"></div>
           </div>
+
+          <hr>
+
+<div class="questions-section">
+  <h3>Part C – Written Opinion (5 points)</h3>
+  <p class="questions-intro">
+    Based on the article, do you agree with the columnist’s advice that the employee should leave the job and explain the situation in a neutral and professional way?
+    <br><br>
+    In your answer:
+    <br>• Clearly state your opinion
+    <br>• Justify your reasoning using examples from the situation
+    <br>• Explain at least one <strong>trade-off</strong> the employee faces
+    <br>• Integrate at least <strong>three</strong> of the following vocabulary terms:
+    <br><strong>workload, morale, feedback, accountability, prioritization, alignment, stakeholder, deadline, negotiation, trade-off</strong>
+    <br><br>
+    Length: <strong>120–180 words</strong>
+  </p>
+
+  <label for="partCResponse">Your answer</label>
+  <textarea id="partCResponse" name="partCResponse"
+    style="width:100%; min-height:180px; padding:14px 16px; border:2px solid #e2e8f0; border-radius:12px; font-family:'Inter', inherit; font-size:0.95rem; line-height:1.6; box-sizing:border-box;"
+    placeholder="Write 120–180 words..."></textarea>
+
+  <div class="muted" style="margin-top:10px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+    <span id="partCWordCount">Word count: 0</span>
+    <span id="partCWordHint">Target: 120–180 words</span>
+  </div>
+</div>
 
           <div class="btn-row" style="justify-content: space-between; margin-top: 32px;">
             <button type="button" class="btn-light" id="toPartA">← Back to Part A</button>
@@ -1202,18 +1230,21 @@
         const studentText = studentOi >= 0 ? q.options[studentOi] : "No answer";
         const correctText = q.options[q.correct];
         const ok          = studentOi === q.correct;
-        if (ok) scoreB += 2;
+        if (ok) scoreB += 1;
 
         partBRowsHTML += `
           <tr>
             <td style="padding:8px;border:1px solid #ccc;font-size:13px;">Q${idx + 1}: ${q.text}</td>
             <td style="padding:8px;border:1px solid #ccc;font-size:13px;">${studentText}</td>
             <td style="padding:8px;border:1px solid #ccc;font-size:13px;">${correctText}</td>
-            <td style="padding:8px;border:1px solid #ccc;color:${ok ? "green" : "#b00"};font-size:13px;">${ok ? "✅ +2 pts" : "❌ 0 pts"}</td>
+            <td style="padding:8px;border:1px solid #ccc;color:${ok ? "green" : "#b00"};font-size:13px;">${ok ? "✅ +1 pts" : "❌ 0 pts"}</td>
           </tr>`;
       });
 
-      const finalScore = scoreA + scoreB;
+      const partCText = (document.getElementById("partCResponse")?.value || "").trim();
+
+// Part C is teacher-graded (0–5). We include it in the report but do not add to the automatic score.
+const autoScore = scoreA + scoreB; // /15
 
       // ---- Session log ----
       let sessionLogHTML = "";
@@ -1266,7 +1297,7 @@
 
         <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
 
-        <h3 style="color:#004080;">Part B – Reading Comprehension (${scoreB} / 10)</h3>
+        <h3 style="color:#004080;">Part B – Reading Comprehension (${scoreB} / 5)</h3>
         <p style="font-size:13px;color:#6b7280;margin-bottom:8px;">
           <em>5 questions were randomly selected from a pool of 10 for this student.</em>
         </p>
@@ -1281,22 +1312,53 @@
         </table>
 
         <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
+        
+        const escapedPartC = partCText
+  .replaceAll("&", "&amp;")
+  .replaceAll("<", "&lt;")
+  .replaceAll(">", "&gt;")
+  .replaceAll("\n", "<br>");
 
-        <h3 style="color:#004080;">Final Score Summary</h3>
-        <table style="border-collapse:collapse;width:100%;max-width:400px;font-size:15px;">
-          <tr>
-            <td style="padding:8px;border:1px solid #ccc;">Part A – Vocabulary Listening</td>
-            <td style="padding:8px;border:1px solid #ccc;font-weight:600;">${scoreA} / 10</td>
-          </tr>
-          <tr>
-            <td style="padding:8px;border:1px solid #ccc;">Part B – Reading Comprehension</td>
-            <td style="padding:8px;border:1px solid #ccc;font-weight:600;">${scoreB} / 10</td>
-          </tr>
-          <tr style="background:#004080;color:#fff;">
-            <td style="padding:10px 8px;border:1px solid #003060;font-weight:700;">FINAL SCORE</td>
-            <td style="padding:10px 8px;border:1px solid #003060;font-weight:800;font-size:1.1rem;">${finalScore} / 20</td>
-          </tr>
-        </table>
+const partCSectionHTML = `
+  <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
+
+  <h3 style="color:#004080;">Part C – Written Opinion (Teacher graded: / 5)</h3>
+  <p style="font-size:13px;color:#6b7280;margin:0 0 8px 0;">
+    <em>Student response (120–180 words expected). Not auto-graded.</em>
+  </p>
+
+  <div style="border:1px solid #ccc;border-radius:8px;padding:12px;font-size:13px;line-height:1.6;background:#fafafa;">
+    ${escapedPartC || "<em>No answer</em>"}
+  </div>
+
+  <p style="margin:10px 0 0 0;font-size:13px;color:#111827;">
+    <b>Teacher score (Part C): ____ / 5</b>
+  </p>
+`;
+
+<h3 style="color:#004080;">Score Summary</h3>
+<table style="border-collapse:collapse;width:100%;max-width:520px;font-size:15px;">
+  <tr>
+    <td style="padding:8px;border:1px solid #ccc;">Part A – Vocabulary Listening</td>
+    <td style="padding:8px;border:1px solid #ccc;font-weight:600;">${scoreA} / 10</td>
+  </tr>
+  <tr>
+    <td style="padding:8px;border:1px solid #ccc;">Part B – Reading Comprehension</td>
+    <td style="padding:8px;border:1px solid #ccc;font-weight:600;">${scoreB} / 5</td>
+  </tr>
+  <tr>
+    <td style="padding:8px;border:1px solid #ccc;">Part C – Written Opinion</td>
+    <td style="padding:8px;border:1px solid #ccc;font-weight:600;">Teacher graded / 5</td>
+  </tr>
+  <tr style="background:#004080;color:#fff;">
+    <td style="padding:10px 8px;border:1px solid #003060;font-weight:700;">AUTO SCORE (A+B)</td>
+    <td style="padding:10px 8px;border:1px solid #003060;font-weight:800;font-size:1.05rem;">${autoScore} / 15</td>
+  </tr>
+  <tr style="background:#0f172a;color:#fff;">
+    <td style="padding:10px 8px;border:1px solid #0b1220;font-weight:800;">FINAL SCORE (after Part C)</td>
+    <td style="padding:10px 8px;border:1px solid #0b1220;font-weight:900;font-size:1.1rem;">____ / 20</td>
+  </tr>
+</table>
 
         ${sessionLogHTML}
 
@@ -1500,6 +1562,34 @@
 
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       });
+
+      function countWords(text) {
+  return (text || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+}
+
+const partCEl = document.getElementById("partCResponse");
+const partCCountEl = document.getElementById("partCWordCount");
+const partCHintEl = document.getElementById("partCWordHint");
+
+function updatePartCWordUI() {
+  if (!partCEl || !partCCountEl) return;
+  const wc = countWords(partCEl.value);
+  partCCountEl.textContent = `Word count: ${wc}`;
+
+  if (partCHintEl) {
+    if (wc < 120) partCHintEl.textContent = "Target: 120–180 words (too short)";
+    else if (wc > 180) partCHintEl.textContent = "Target: 120–180 words (too long)";
+    else partCHintEl.textContent = "Target: 120–180 words (ok)";
+  }
+}
+
+if (partCEl) {
+  partCEl.addEventListener("input", updatePartCWordUI);
+  updatePartCWordUI();
+}
 
       // ---- Submit ----
       document.getElementById("examForm").addEventListener("submit", e => {
