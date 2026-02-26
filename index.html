@@ -20,6 +20,7 @@
       -webkit-touch-callout: none;
       margin: 0;
       padding: 0;
+      overscroll-behavior: none;
     }
     * { translate: none !important; }
 
@@ -1488,12 +1489,16 @@
         document.getElementById("partB").classList.add("active");
         logEvent("Moved to Part B", "Student navigated from Part A to Part B");
         updatePartBProgress();
+
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       });
 
       document.getElementById("toPartA").addEventListener("click", () => {
         document.getElementById("partB").classList.remove("active");
         document.getElementById("partA").classList.add("active");
         logEvent("Returned to Part A", "Student navigated from Part B to Part A");
+
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       });
 
       // ---- Submit ----
