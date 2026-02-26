@@ -1275,45 +1275,9 @@ const autoScore = scoreA + scoreB; // /15
 
       // ---- Full HTML report ----
       const htmlReport = `
-        <h2 style="color:#004080;margin:0 0 8px 0;">Results – ${currentExamTitle} – ${studentName}</h2>
-        <table style="border-collapse:collapse;width:100%;max-width:640px;font-size:14px;margin-bottom:12px;">
-          <tr><td style="padding:4px 0;"><b>Student:</b> ${studentName}</td></tr>
-          <tr><td style="padding:4px 0;"><b>Email:</b> ${studentEmail}</td></tr>
-          <tr><td style="padding:4px 0;"><b>Group:</b> ${group}</td></tr>
-          <tr><td style="padding:4px 0;"><b>Time Used:</b> ~${minutesUsed} min</td></tr>
-        </table>
-
-        <hr style="border:none;border-top:1px solid #ddd;margin:14px 0;">
-
-       <h3 style="color:#004080;">Part A – Vocabulary Listening (${scoreA} / 10)</h3>
-<table style="border-collapse:collapse;width:100%;font-size:14px;margin-top:8px;">
-  <thead><tr style="background:#004080;color:#fff;text-align:left;">
-    <th style="padding:8px;border:1px solid #ccc;">Student Answer</th>
-    <th style="padding:8px;border:1px solid #ccc;">Correct Answer</th>
-    <th style="padding:8px;border:1px solid #ccc;">Result</th>
-  </tr></thead>
-  <tbody>${partARowsHTML}</tbody>
-</table>
-
-        <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
-
-        <h3 style="color:#004080;">Part B – Reading Comprehension (${scoreB} / 5)</h3>
-        <p style="font-size:13px;color:#6b7280;margin-bottom:8px;">
-          <em>5 questions were randomly selected from a pool of 10 for this student.</em>
-        </p>
-        <table style="border-collapse:collapse;width:100%;font-size:14px;margin-top:8px;">
-          <thead><tr style="background:#004080;color:#fff;text-align:left;">
-            <th style="padding:8px;border:1px solid #ccc;">Question</th>
-            <th style="padding:8px;border:1px solid #ccc;">Student Answer</th>
-            <th style="padding:8px;border:1px solid #ccc;">Correct Answer</th>
-            <th style="padding:8px;border:1px solid #ccc;">Result</th>
-          </tr></thead>
-          <tbody>${partBRowsHTML}</tbody>
-        </table>
-
-        <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
-        
-        const escapedPartC = partCText
+// ---- Part C (teacher graded) ----
+const partCText = (document.getElementById("partCResponse")?.value || "").trim();
+const escapedPartC = partCText
   .replaceAll("&", "&amp;")
   .replaceAll("<", "&lt;")
   .replaceAll(">", "&gt;")
@@ -1336,36 +1300,81 @@ const partCSectionHTML = `
   </p>
 `;
 
-<h3 style="color:#004080;">Score Summary</h3>
-<table style="border-collapse:collapse;width:100%;max-width:520px;font-size:15px;">
-  <tr>
-    <td style="padding:8px;border:1px solid #ccc;">Part A – Vocabulary Listening</td>
-    <td style="padding:8px;border:1px solid #ccc;font-weight:600;">${scoreA} / 10</td>
-  </tr>
-  <tr>
-    <td style="padding:8px;border:1px solid #ccc;">Part B – Reading Comprehension</td>
-    <td style="padding:8px;border:1px solid #ccc;font-weight:600;">${scoreB} / 5</td>
-  </tr>
-  <tr>
-    <td style="padding:8px;border:1px solid #ccc;">Part C – Written Opinion</td>
-    <td style="padding:8px;border:1px solid #ccc;font-weight:600;">Teacher graded / 5</td>
-  </tr>
-  <tr style="background:#004080;color:#fff;">
-    <td style="padding:10px 8px;border:1px solid #003060;font-weight:700;">AUTO SCORE (A+B)</td>
-    <td style="padding:10px 8px;border:1px solid #003060;font-weight:800;font-size:1.05rem;">${autoScore} / 15</td>
-  </tr>
-  <tr style="background:#0f172a;color:#fff;">
-    <td style="padding:10px 8px;border:1px solid #0b1220;font-weight:800;">FINAL SCORE (after Part C)</td>
-    <td style="padding:10px 8px;border:1px solid #0b1220;font-weight:900;font-size:1.1rem;">____ / 20</td>
-  </tr>
-</table>
+// Auto score is only Part A + Part B
+const autoScore = scoreA + scoreB; // /15
 
-        ${sessionLogHTML}
+// ---- Full HTML report ----
+const htmlReport = `
+  <h2 style="color:#004080;margin:0 0 8px 0;">Results – ${currentExamTitle} – ${studentName}</h2>
+  <table style="border-collapse:collapse;width:100%;max-width:640px;font-size:14px;margin-bottom:12px;">
+    <tr><td style="padding:4px 0;"><b>Student:</b> ${studentName}</td></tr>
+    <tr><td style="padding:4px 0;"><b>Email:</b> ${studentEmail}</td></tr>
+    <tr><td style="padding:4px 0;"><b>Group:</b> ${group}</td></tr>
+    <tr><td style="padding:4px 0;"><b>Time Used:</b> ~${minutesUsed} min</td></tr>
+  </table>
 
-        <div style="border-top:1px solid #ccc;margin-top:16px;padding-top:8px;font-size:12px;color:#555;">
-          <em>This report was generated automatically – CC2 English Exam – Team Management.</em>
-        </div>
-      `;
+  <hr style="border:none;border-top:1px solid #ddd;margin:14px 0;">
+
+  <h3 style="color:#004080;">Part A – Vocabulary Listening (${scoreA} / 10)</h3>
+  <table style="border-collapse:collapse;width:100%;font-size:14px;margin-top:8px;">
+    <thead><tr style="background:#004080;color:#fff;text-align:left;">
+      <th style="padding:8px;border:1px solid #ccc;">Student Answer</th>
+      <th style="padding:8px;border:1px solid #ccc;">Correct Answer</th>
+      <th style="padding:8px;border:1px solid #ccc;">Result</th>
+    </tr></thead>
+    <tbody>${partARowsHTML}</tbody>
+  </table>
+
+  <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
+
+  <h3 style="color:#004080;">Part B – Reading Comprehension (${scoreB} / 5)</h3>
+  <p style="font-size:13px;color:#6b7280;margin-bottom:8px;">
+    <em>5 questions were randomly selected from a pool of 10 for this student.</em>
+  </p>
+  <table style="border-collapse:collapse;width:100%;font-size:14px;margin-top:8px;">
+    <thead><tr style="background:#004080;color:#fff;text-align:left;">
+      <th style="padding:8px;border:1px solid #ccc;">Question</th>
+      <th style="padding:8px;border:1px solid #ccc;">Student Answer</th>
+      <th style="padding:8px;border:1px solid #ccc;">Correct Answer</th>
+      <th style="padding:8px;border:1px solid #ccc;">Result</th>
+    </tr></thead>
+    <tbody>${partBRowsHTML}</tbody>
+  </table>
+
+  ${partCSectionHTML}
+
+  <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
+
+  <h3 style="color:#004080;">Score Summary</h3>
+  <table style="border-collapse:collapse;width:100%;max-width:520px;font-size:15px;">
+    <tr>
+      <td style="padding:8px;border:1px solid #ccc;">Part A – Vocabulary Listening</td>
+      <td style="padding:8px;border:1px solid #ccc;font-weight:600;">${scoreA} / 10</td>
+    </tr>
+    <tr>
+      <td style="padding:8px;border:1px solid #ccc;">Part B – Reading Comprehension</td>
+      <td style="padding:8px;border:1px solid #ccc;font-weight:600;">${scoreB} / 5</td>
+    </tr>
+    <tr>
+      <td style="padding:8px;border:1px solid #ccc;">Part C – Written Opinion</td>
+      <td style="padding:8px;border:1px solid #ccc;font-weight:600;">Teacher graded / 5</td>
+    </tr>
+    <tr style="background:#004080;color:#fff;">
+      <td style="padding:10px 8px;border:1px solid #003060;font-weight:700;">AUTO SCORE (A+B)</td>
+      <td style="padding:10px 8px;border:1px solid #003060;font-weight:800;font-size:1.05rem;">${autoScore} / 15</td>
+    </tr>
+    <tr style="background:#0f172a;color:#fff;">
+      <td style="padding:10px 8px;border:1px solid #0b1220;font-weight:800;">FINAL SCORE (after Part C)</td>
+      <td style="padding:10px 8px;border:1px solid #0b1220;font-weight:900;font-size:1.1rem;">____ / 20</td>
+    </tr>
+  </table>
+
+  ${sessionLogHTML}
+
+  <div style="border-top:1px solid #ccc;margin-top:16px;padding-top:8px;font-size:12px;color:#555;">
+    <em>This report was generated automatically – CC2 English Exam – Team Management.</em>
+  </div>
+`;
 
       const subject = EXAM_CONFIG.emailSubjectTemplate
         .replace("(NAME)", studentName)
