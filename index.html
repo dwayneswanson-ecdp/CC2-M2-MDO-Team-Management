@@ -1561,7 +1561,7 @@ const htmlReport = `
         logEvent("Moved to Part B", "Student navigated from Part A to Part B");
         updatePartBProgress();
 
-        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       });
 
       document.getElementById("toPartA").addEventListener("click", () => {
@@ -1569,7 +1569,7 @@ const htmlReport = `
         document.getElementById("partA").classList.add("active");
         logEvent("Returned to Part A", "Student navigated from Part B to Part A");
 
-        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       });
 
       function countWords(text) {
