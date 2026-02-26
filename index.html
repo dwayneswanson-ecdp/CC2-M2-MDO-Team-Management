@@ -1182,12 +1182,13 @@
         const ok         = studentAns === correct;
         if (ok) scoreA++;
         partARowsHTML += `
-          <tr>
-            <td style="padding:8px;border:1px solid #ccc;">Definition ${origIdx + 1}</td>
-            <td style="padding:8px;border:1px solid #ccc;">${studentAns}</td>
-            <td style="padding:8px;border:1px solid #ccc;">${correct}</td>
-            <td style="padding:8px;border:1px solid #ccc;color:${ok ? "green" : "#b00"};">${ok ? "✅ Correct" : "❌ Incorrect"}</td>
-          </tr>`;
+  <tr>
+    <td style="padding:8px;border:1px solid #ccc;">${studentAns}</td>
+    <td style="padding:8px;border:1px solid #ccc;">${correct}</td>
+    <td style="padding:8px;border:1px solid #ccc;color:${ok ? "green" : "#b00"};">
+      ${ok ? "✅ Correct" : "❌ Incorrect"}
+    </td>
+  </tr>`;
       });
 
       // ---- Grade Part B ----
@@ -1252,16 +1253,15 @@
 
         <hr style="border:none;border-top:1px solid #ddd;margin:14px 0;">
 
-        <h3 style="color:#004080;">Part A – Vocabulary Listening (${scoreA} / 10)</h3>
-        <table style="border-collapse:collapse;width:100%;font-size:14px;margin-top:8px;">
-          <thead><tr style="background:#004080;color:#fff;text-align:left;">
-            <th style="padding:8px;border:1px solid #ccc;">Definition</th>
-            <th style="padding:8px;border:1px solid #ccc;">Student Answer</th>
-            <th style="padding:8px;border:1px solid #ccc;">Correct Answer</th>
-            <th style="padding:8px;border:1px solid #ccc;">Result</th>
-          </tr></thead>
-          <tbody>${partARowsHTML}</tbody>
-        </table>
+       <h3 style="color:#004080;">Part A – Vocabulary Listening (${scoreA} / 10)</h3>
+<table style="border-collapse:collapse;width:100%;font-size:14px;margin-top:8px;">
+  <thead><tr style="background:#004080;color:#fff;text-align:left;">
+    <th style="padding:8px;border:1px solid #ccc;">Student Answer</th>
+    <th style="padding:8px;border:1px solid #ccc;">Correct Answer</th>
+    <th style="padding:8px;border:1px solid #ccc;">Result</th>
+  </tr></thead>
+  <tbody>${partARowsHTML}</tbody>
+</table>
 
         <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
 
